@@ -1,0 +1,15 @@
+# Только после настройки MAX. Запуск: docker compose -f compose.yaml -f compose.max.yaml up -d
+services:
+  bot-worker:
+    image: opora-apk-app
+    command: ["python", "-m", "app.jobs"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://navigator:${POSTGRES_PASSWORD:-local-demo-only}@db:5432/navigator
+      APP_ENV: ${APP_ENV:-demo}
+      SEED_DEMO: "false"
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost:8000}
+      MAX_BOT_TOKEN: ${MAX_BOT_TOKEN:-}
+      MAX_API_BASE: ${MAX_API_BASE:-https://platform-api2.max.ru}
+    depends_on:
+      app:
+        condition: service_healthy

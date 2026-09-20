@@ -1,0 +1,92 @@
+[
+  {
+    "file": "subsidii.html",
+    "url": "https://minagro.saratov.gov.ru/subsidii/",
+    "checked_at": "2026-09-20T12:43:36.659313+00:00",
+    "http": 200,
+    "sha256": "b4ad9a5c39937649d105c84f040881468ffd6657cb9dc5f3e158b1fa0f952350",
+    "bytes": 1050347,
+    "unchanged": false
+  },
+  {
+    "file": "source-1.pdf",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/26-009-55333-2-0147.pdf",
+    "checked_at": "2026-09-20T12:43:36.659313+00:00",
+    "http": 200,
+    "sha256": "c64d0aeee312f7254751374be385e4c6fd66af4b753ed1c83a86db95138256ec",
+    "bytes": 400427,
+    "unchanged": true
+  },
+  {
+    "file": "source-2.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/26-009-R0162-2-0141.zip",
+    "checked_at": "2026-09-20T12:43:36.660545+00:00",
+    "http": 200,
+    "sha256": "d26ece7de8048cf1d47a32c208089a9f16dbdb618e40d7391a6f5436baacb932",
+    "bytes": 1278610,
+    "unchanged": true
+  },
+  {
+    "file": "source-3.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/0142-0143.zip",
+    "checked_at": "2026-09-20T12:43:37.804498+00:00",
+    "http": 200,
+    "sha256": "b2c4ac4ca2be7473952e0529f9e04432c3b67b384ce95bd23d6250e211256543",
+    "bytes": 1046968,
+    "unchanged": true
+  },
+  {
+    "file": "source-4.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/26-009-55332-2-0138.zip",
+    "checked_at": "2026-09-20T12:43:38.068062+00:00",
+    "http": 200,
+    "sha256": "f673a315a489979f056d1ddd8335940e92948f1a02430b9e1b10485b64412feb",
+    "bytes": 679335,
+    "unchanged": true
+  },
+  {
+    "file": "source-5.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/фермерское%20хозяйство%201.zip",
+    "checked_at": "2026-09-20T12:43:38.090675+00:00",
+    "http": 200,
+    "sha256": "afa3cf8fc914433abc2a07b7e7c0f971f6744ae4b2541db87f86a18cff1a4058",
+    "bytes": 24376542,
+    "unchanged": true
+  },
+  {
+    "file": "source-6.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/агромотиватор%201.zip",
+    "checked_at": "2026-09-20T12:43:38.541078+00:00",
+    "http": 200,
+    "sha256": "eacc5805c7c2dc80faca31fc710732d62d588dd45604d22d230e25658adc3a20",
+    "bytes": 24726738,
+    "unchanged": true
+  },
+  {
+    "file": "source-7.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/агропрогресс%201.zip",
+    "checked_at": "2026-09-20T12:43:38.668597+00:00",
+    "http": 200,
+    "sha256": "14bd9385f2fb47475908717e14d3b1f5a2fa5edd037470a89fb2c689d8670e2a",
+    "bytes": 22288859,
+    "unchanged": true
+  },
+  {
+    "file": "source-8.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/Объявление%20об%20отборе%200127.zip",
+    "checked_at": "2026-09-20T12:43:51.105569+00:00",
+    "http": 200,
+    "sha256": "7ba5a015dc91e3f6e4e544f9fd4c3cc7ce5b20a96c5881a261c3af40955bf3a2",
+    "bytes": 1540270,
+    "unchanged": true
+  },
+  {
+    "file": "source-9.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/26-009-R3580-2-0030.zip",
+    "checked_at": "2026-09-20T12:43:53.153178+00:00",
+    "http": 200,
+    "sha256": "d9d42cf644fa2ede42d70d87ba64a1a53ea0395b0eac2d88b0374c2b354522e9",
+    "bytes": 1057512,
+    "unchanged": true
+  }
+]

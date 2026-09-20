@@ -1,0 +1,56 @@
+[
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "c64d0aeee312f7254751374be385e4c6fd66af4b753ed1c83a86db95138256ec",
+    "file": "source-1.pdf",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/26-009-55333-2-0147.pdf"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "d26ece7de8048cf1d47a32c208089a9f16dbdb618e40d7391a6f5436baacb932",
+    "file": "source-2.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/26-009-R0162-2-0141.zip"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "b2c4ac4ca2be7473952e0529f9e04432c3b67b384ce95bd23d6250e211256543",
+    "file": "source-3.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/0142-0143.zip"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "f673a315a489979f056d1ddd8335940e92948f1a02430b9e1b10485b64412feb",
+    "file": "source-4.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/26-009-55332-2-0138.zip"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "afa3cf8fc914433abc2a07b7e7c0f971f6744ae4b2541db87f86a18cff1a4058",
+    "file": "source-5.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/фермерское%20хозяйство%201.zip"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "eacc5805c7c2dc80faca31fc710732d62d588dd45604d22d230e25658adc3a20",
+    "file": "source-6.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/агромотиватор%201.zip"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "14bd9385f2fb47475908717e14d3b1f5a2fa5edd037470a89fb2c689d8670e2a",
+    "file": "source-7.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/агропрогресс%201.zip"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "sha256": "7ba5a015dc91e3f6e4e544f9fd4c3cc7ce5b20a96c5881a261c3af40955bf3a2",
+    "file": "source-8.zip",
+    "url": "https://minagro.saratov.gov.ru/docs/2026/Объявление%20об%20отборе%200127.zip"
+  },
+  {
+    "retrieved_on": "2026-09-18",
+    "url": "https://minagro.saratov.gov.ru/docs/26-009-R3580-2-0030.zip",
+    "sha256": "d9d42cf644fa2ede42d70d87ba64a1a53ea0395b0eac2d88b0374c2b354522e9",
+    "file": "source-9.zip"
+  }
+]

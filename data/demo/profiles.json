@@ -1,0 +1,9 @@
+{
+  "synthetic": true,
+  "description": "Только локальные примеры. Это не реальные хозяйства и не подтверждение права на поддержку.",
+  "profiles": [
+    {"name":"Учебный КФХ", "profile":{"registration_region":"64","activity_region":"64","legal_form":"ip","is_kfh":true,"goal":"equipment","own_funds":"450000.00"},"expected":{"farm-growth":"PASS"}},
+    {"name":"Неизвестные ответы", "profile":{},"expected":{"farm-growth":"UNKNOWN"}},
+    {"name":"Другой регион", "profile":{"registration_region":"other","is_kfh":true,"goal":"equipment","own_funds":"450000"},"expected":{"farm-growth":"FAIL"}}
+  ]
+}

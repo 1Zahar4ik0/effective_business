@@ -1,0 +1,66 @@
+# Standalone configuration. Never combine with compose.yaml (demo).
+name: opora-apk-production
+services:
+  db:
+    image: postgres:17.6-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: navigator
+      POSTGRES_USER: navigator
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a strong URL-safe password}
+    volumes:
+      - production_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U navigator -d navigator"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  app:
+    image: opora-apk-production-app
+    build: .
+    restart: unless-stopped
+    environment: &app_environment
+      APP_ENV: production
+      SEED_DEMO: "false"
+      DATABASE_URL: postgresql+psycopg://navigator:${POSTGRES_PASSWORD:?Set password}@db:5432/navigator
+      PUBLIC_ORIGIN: https://${DOMAIN:?Set domain}
+      MAX_BOT_TOKEN: ${MAX_BOT_TOKEN:-}
+      MAX_WEBHOOK_SECRET: ${MAX_WEBHOOK_SECRET:-}
+      MAX_APP_URL: ${MAX_APP_URL:-}
+      MAX_ADMIN_IDS: ${MAX_ADMIN_IDS:-}
+      MAX_API_BASE: https://platform-api2.max.ru
+      STATIC_DIR: /app/frontend/dist
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8000/health',headers={'Host':'${DOMAIN:?Set domain}'}))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  worker:
+    image: opora-apk-production-app
+    profiles: [max]
+    restart: unless-stopped
+    environment: *app_environment
+    command: ["python", "-m", "app.jobs"]
+    depends_on:
+      app:
+        condition: service_healthy
+  proxy:
+    image: nginx:1.30.5-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Set domain}
+      NGINX_ENVSUBST_FILTER: DOMAIN
+    ports:
+      - "${BIND_IP:-0.0.0.0}:${HTTP_PORT:-80}:80"
+      - "${BIND_IP:-0.0.0.0}:${HTTPS_PORT:-443}:443"
+    volumes:
+      - ./deploy/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ${TLS_DIR:?Set absolute directory with fullchain.pem and privkey.pem}:/etc/nginx/tls:ro
+    depends_on:
+      app:
+        condition: service_healthy
+volumes:
+  production_data:

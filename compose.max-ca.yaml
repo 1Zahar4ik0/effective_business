@@ -1,0 +1,13 @@
+# Дополнение к compose.production.yaml при подключении MAX.
+# Указать абсолютный путь к проверенному полному CA bundle, не приватному ключу.
+services:
+  app:
+    environment:
+      MAX_CA_BUNDLE: /run/max-trust/ca-bundle.pem
+    volumes:
+      - ${MAX_CA_BUNDLE_HOST:?Set path to verified CA bundle}:/run/max-trust/ca-bundle.pem:ro
+  worker:
+    environment:
+      MAX_CA_BUNDLE: /run/max-trust/ca-bundle.pem
+    volumes:
+      - ${MAX_CA_BUNDLE_HOST:?Set path to verified CA bundle}:/run/max-trust/ca-bundle.pem:ro

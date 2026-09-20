@@ -1,0 +1,16 @@
+# Только выделенная тестовая БД navigator_test; обычная navigator не очищается.
+services:
+  tests:
+    image: opora-apk-app
+    environment:
+      APP_ENV: test
+      SEED_DEMO: "false"
+      DATABASE_URL: postgresql+psycopg://navigator:${POSTGRES_PASSWORD:-local-demo-only}@db:5432/navigator_test
+      TEST_DATABASE_URL: postgresql+psycopg://navigator:${POSTGRES_PASSWORD:-local-demo-only}@db:5432/navigator_test
+    volumes:
+      - ./backend/tests:/app/backend/tests:ro
+      - ./docs/openapi.json:/app/docs/openapi.json:ro
+    command: ["sh", "-c", "alembic -c backend/alembic.ini upgrade head && pytest backend/tests -q -p no:cacheprovider"]
+    depends_on:
+      db:
+        condition: service_healthy

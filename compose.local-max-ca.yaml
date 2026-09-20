@@ -1,0 +1,8 @@
+# Local computer only. The token stays in the local .env / container.
+# This file does not publish the app or install a system-wide CA.
+services:
+  app:
+    environment:
+      MAX_CA_BUNDLE: /run/max-trust/ca-bundle.pem
+    volumes:
+      - ${MAX_CA_BUNDLE_HOST:?Set absolute path to a verified CA bundle}:/run/max-trust/ca-bundle.pem:ro

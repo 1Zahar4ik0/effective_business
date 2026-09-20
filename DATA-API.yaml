@@ -1,0 +1,373 @@
+{
+  "format": "opora-api-scenarios/1",
+  "description": "JSON-совместимый YAML. Только изолированная локальная демонстрация. Выполнение: python backend/check_data_api.py",
+  "base_url": "http://localhost:8000",
+  "steps": [
+    {
+      "method": "GET",
+      "path": "/api/config",
+      "expect": 200,
+      "equals": {
+        "/demo": true
+      },
+      "id": "step-01",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "demo",
+          "max_configured"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "expect": 200,
+      "equals": {
+        "/status": "ok"
+      },
+      "id": "step-02",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "status",
+          "environment"
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/demo",
+      "body": {
+        "persona": "farmer"
+      },
+      "expect": 200,
+      "capture": {
+        "csrf": "/csrf"
+      },
+      "id": "step-03",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "user",
+          "csrf"
+        ]
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/profile",
+      "body": {
+        "registration_region": "64",
+        "activity_region": "64",
+        "legal_form": "ip",
+        "is_kfh": true,
+        "goal": "equipment",
+        "own_funds": "450000"
+      },
+      "expect": 200,
+      "id": "step-04",
+      "role": "farmer",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "registration_region",
+          "is_kfh"
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/matches",
+      "expect": 200,
+      "capture": {
+        "evaluation_id": "/evaluation_id"
+      },
+      "id": "step-05",
+      "role": "farmer",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "evaluation_id",
+          "results"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/measures/farm-growth",
+      "expect": 200,
+      "equals": {
+        "/synthetic": true
+      },
+      "capture": {
+        "round_id": "/rounds/0/id"
+      },
+      "id": "step-06",
+      "role": "farmer",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "id",
+          "version_id",
+          "rounds",
+          "data"
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/preparation-plans",
+      "body": {
+        "round_id": "{round_id}"
+      },
+      "expect": 200,
+      "capture": {
+        "plan_id": "/id",
+        "item_id": "/items/0/id",
+        "revision": "/revision"
+      },
+      "id": "step-07",
+      "role": "farmer",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "id",
+          "items",
+          "measure",
+          "revision"
+        ]
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/preparation-plans/{plan_id}/items/{item_id}",
+      "body": {
+        "revision": "{revision}",
+        "done": true
+      },
+      "expect": 200,
+      "equals": {
+        "/items/0/done": true
+      },
+      "id": "step-08",
+      "role": "farmer",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "id",
+          "items",
+          "revision"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/versions",
+      "expect": 403,
+      "id": "step-09",
+      "role": "farmer",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "detail"
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/demo",
+      "body": {
+        "persona": "second"
+      },
+      "expect": 200,
+      "capture": {
+        "csrf": "/csrf"
+      },
+      "id": "step-10",
+      "role": "farmer",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "user",
+          "csrf"
+        ]
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/preparation-plans/{plan_id}/items/{item_id}",
+      "body": {
+        "revision": 1,
+        "done": false
+      },
+      "expect": 404,
+      "id": "step-11",
+      "role": "second",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "detail"
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/demo",
+      "body": {
+        "persona": "editor"
+      },
+      "expect": 200,
+      "capture": {
+        "csrf": "/csrf"
+      },
+      "id": "step-12",
+      "role": "second",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "user",
+          "csrf"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/versions",
+      "expect": 200,
+      "id": "step-13",
+      "role": "editor",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "array",
+        "required": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "expect": 200,
+      "id": "step-14",
+      "role": "editor",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "ok"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/official-announcements",
+      "expect": 200,
+      "equals": {
+        "/release_id": "saratov-announcements-20260920-r1"
+      },
+      "id": "official-announcements",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "release_id",
+          "items"
+        ]
+      }
+    }
+  ],
+  "schema_version": "1.0",
+  "solution": "Опора АПК",
+  "environment": "local-demo",
+  "production": {
+    "base_url": null,
+    "status": "blocked: публичный HTTPS и MAX не настроены"
+  },
+  "authentication": {
+    "local": "POST /api/auth/demo; persona farmer, second, editor. Без пароля, только локальный demo.",
+    "production": "Подписанные MAX initData; HttpOnly cookie; CSRF из /api/auth/me. Реальные доступы выдаются отдельно."
+  }
+}

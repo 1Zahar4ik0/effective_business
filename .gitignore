@@ -1,0 +1,27 @@
+.venv/
+node_modules/
+frontend/dist/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.*
+!.env.example
+*.log
+*.sqlite*
+test-results/
+playwright-report/
+docs/qa/
+tmp/
+backups/
+_qa_*/
+lab*.docx
+lab*.pdf
+lab*.png
+build_lab*.py
+output/submission/jury/
+output/submission/*.zip
+output/pdf/opora-apk-jury.pdf
+
+# Preserved destination files from the local project move
+.migration-backup-*/

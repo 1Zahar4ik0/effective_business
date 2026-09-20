@@ -1,0 +1,254 @@
+[
+  {
+    "archive": "source-1.pdf",
+    "document": "source-1.pdf",
+    "sha256": "c64d0aeee312f7254751374be385e4c6fd66af4b753ed1c83a86db95138256ec",
+    "text": "01.txt",
+    "characters": 18903
+  },
+  {
+    "archive": "source-2.zip",
+    "document": "62-пр от 05.03.2024 с изм. от 04 09 2026.pdf",
+    "sha256": "770df3cb6c79a3d1206cef7ebad5b424808dd1fff25fef855eaa8ae91ef464c0",
+    "text": "02.txt",
+    "characters": 138304
+  },
+  {
+    "archive": "source-2.zip",
+    "document": "обьявление об отборе.pdf",
+    "sha256": "e1c2b89c22ceb79bff7b26b5420a3b1d65806d20526c31f8dd3fb8ccfcb5da2e",
+    "text": "03.txt",
+    "characters": 38555
+  },
+  {
+    "archive": "source-2.zip",
+    "document": "Постановление Правительства СО от 03.09.2026 № 651-П (141-П).pdf",
+    "sha256": "a7918d970b3e3d3136a19b6df0a8ab48492b54be987666bfeaee9a8f78e6c4da",
+    "text": "04.txt",
+    "characters": 101
+  },
+  {
+    "archive": "source-3.zip",
+    "document": "Отбор по страх раст-во (0142).pdf",
+    "sha256": "8ef01a5ab863d9c56c33379cebe8dbbcba0de29a550bf75900a92ba181264d32",
+    "text": "05.txt",
+    "characters": 15188
+  },
+  {
+    "archive": "source-3.zip",
+    "document": "Отбор по страх. живот-ва (0143).pdf",
+    "sha256": "6706753ce0b73b5109af293d1f7248e9b195e63ad573fa94088a683b4a09bede",
+    "text": "06.txt",
+    "characters": 14576
+  },
+  {
+    "archive": "source-3.zip",
+    "document": "Постановление Прав.Сара.обл от 11.04.2016 г N 157 П (с измен. от 04.02.26).pdf",
+    "sha256": "24ab9168d025069f626f1e0eef8f2c8d38273420d171c14c7c58c19e87bb7bcf",
+    "text": "07.txt",
+    "characters": 69959
+  },
+  {
+    "archive": "source-3.zip",
+    "document": "Приказ министерства сельского хозяйства Саратовской области от 27 апреля 2016 г .pdf",
+    "sha256": "b1becb33dac497a4e4f599faa63d3f3d3fbed6ace03b36fc4f6089c053bda8f7",
+    "text": "08.txt",
+    "characters": 62049
+  },
+  {
+    "archive": "source-4.zip",
+    "document": "Обьявление об отборе.pdf",
+    "sha256": "05a36aabefdc0415f026aee9b500a9b74e25035fc6598fa59962ab898f781fb1",
+    "text": "09.txt",
+    "characters": 19380
+  },
+  {
+    "archive": "source-4.zip",
+    "document": "Постановление 292-П Об_утверждении_Положения_о_предоставлении_субсидий_из_областного_бюджета_на_реализацию_мероприятий,_.pdf",
+    "sha256": "83b0458392d563207fd2e346c17178f81dbadb15c3ce4213b3ecd3debd0c0625",
+    "text": "10.txt",
+    "characters": 54148
+  },
+  {
+    "archive": "source-4.zip",
+    "document": "Профиль субсидии.pdf",
+    "sha256": "d0a9d6c9226b7ca4a4abd08502bb68c3fd39b6c714fe44397de6aa3fb37779e1",
+    "text": "11.txt",
+    "characters": 11676
+  },
+  {
+    "archive": "source-5.zip",
+    "document": "фермерское хозяйство 1/624-П Развитие ФХ.pdf",
+    "sha256": "b76d049106595e4d4dcc9bf0da5480c74bb5c84d002bbaf0514e517c3b8e4a18",
+    "text": "12.txt",
+    "characters": 118
+  },
+  {
+    "archive": "source-5.zip",
+    "document": "фермерское хозяйство 1/Объявление об отборе_Грант на развитие ФХ.pdf",
+    "sha256": "a8bb90d7737559f007fa97a762042bfa90aad981044a43957ce7298de56e1eac",
+    "text": "13.txt",
+    "characters": 70577
+  },
+  {
+    "archive": "source-5.zip",
+    "document": "фермерское хозяйство 1/Постановление Правительства Саратовской области от 23 марта 2026 г N 181 П Об ут.pdf",
+    "sha256": "72d247fd074c817825edefc626be9a2d867602bba526e382f2c7e138dec0f837",
+    "text": "14.txt",
+    "characters": 80064
+  },
+  {
+    "archive": "source-5.zip",
+    "document": "фермерское хозяйство 1/Постановление Развитие ФХ подписанное.pdf",
+    "sha256": "eab0220efae0230bc6002db0a46acb8a53722ced15617524ff8c7c9ed8678668",
+    "text": "15.txt",
+    "characters": 5037
+  },
+  {
+    "archive": "source-5.zip",
+    "document": "фермерское хозяйство 1/Приказ МСХ РФ №185 Перечень затрат .pdf",
+    "sha256": "1222b4aabe10144cf701ef5c327d5caaa2c549e45d355db12f6564a9974763d3",
+    "text": "16.txt",
+    "characters": 296
+  },
+  {
+    "archive": "source-5.zip",
+    "document": "фермерское хозяйство 1/Приказ МСХ СО 105-пр Бизнес-план Развитие ФХ.pdf",
+    "sha256": "b9cdf363889678c1603e6021a28f6d15b8c022d22ab2910a415d9da60776dd79",
+    "text": "17.txt",
+    "characters": 278
+  },
+  {
+    "archive": "source-5.zip",
+    "document": "фермерское хозяйство 1/Приказ МСХ СО 106-пр СХ территории и агломерации Развитие ФХ-сжатый.pdf",
+    "sha256": "007feb35f1fdfb0d73f5c6e06057c1e6547e417696bb268d0fc5433951a36e22",
+    "text": "18.txt",
+    "characters": 11531
+  },
+  {
+    "archive": "source-6.zip",
+    "document": "агромотиватор 1/623-П Агромотиватор.pdf",
+    "sha256": "a03d505caaba56567295ac2a6ed9ff9e5587bb6b4a80a608087ab686368e8a5e",
+    "text": "19.txt",
+    "characters": 152
+  },
+  {
+    "archive": "source-6.zip",
+    "document": "агромотиватор 1/Объявление об отборе_Грант Агромотиватор.pdf",
+    "sha256": "249cfa06bac7465c1c592037ac53d266588ca0f191ade98e48e8c51668759ff0",
+    "text": "20.txt",
+    "characters": 72735
+  },
+  {
+    "archive": "source-6.zip",
+    "document": "агромотиватор 1/Постановление Агромотиватор подписанное.pdf",
+    "sha256": "d8e7db08066f937a94153ed68f10c511e5530cadc116eb3e9ff9d85c1422f486",
+    "text": "21.txt",
+    "characters": 5353
+  },
+  {
+    "archive": "source-6.zip",
+    "document": "агромотиватор 1/Постановление Правительства Саратовской области от 7 октября 2025 г N 770 П Об у.pdf",
+    "sha256": "d68200730db6eaaa678e32ac7f34c227bea8ddb386ac30a33eabe9deed55309c",
+    "text": "22.txt",
+    "characters": 89681
+  },
+  {
+    "archive": "source-6.zip",
+    "document": "агромотиватор 1/Приказ МСХ РФ №185 Перечень затрат .pdf",
+    "sha256": "1222b4aabe10144cf701ef5c327d5caaa2c549e45d355db12f6564a9974763d3",
+    "text": "23.txt",
+    "characters": 296
+  },
+  {
+    "archive": "source-6.zip",
+    "document": "агромотиватор 1/Приказ МСХ СО 112-пр СХ территории и агломерации Агромотиватор-сжатый.pdf",
+    "sha256": "0f58d5e65d75463120055bd80dc91a51177fd14a91662d323a0c3df040ed5270",
+    "text": "24.txt",
+    "characters": 11366
+  },
+  {
+    "archive": "source-6.zip",
+    "document": "агромотиватор 1/Приказ МСХ СО 115-пр бизнес- план Агромотиватор.pdf",
+    "sha256": "db621c0771ab728a78b45a975b66aaff87c2f9906f27ed2e9e0e5865c74bdf1d",
+    "text": "25.txt",
+    "characters": 260
+  },
+  {
+    "archive": "source-7.zip",
+    "document": "агропрогресс 1/622-П Агропрогресс.pdf",
+    "sha256": "d7701f7df88b4ee9d0f14aaca2680f429059e1f86deab1ffd28d7ec05cf8a1ab",
+    "text": "26.txt",
+    "characters": 84
+  },
+  {
+    "archive": "source-7.zip",
+    "document": "агропрогресс 1/Объявление об отборе_Грант Агропрогресс.pdf",
+    "sha256": "cfa209a3083f30140af8cf56b3ba28150723fc5151bda59e1abc88a8ec3ca4ad",
+    "text": "27.txt",
+    "characters": 56964
+  },
+  {
+    "archive": "source-7.zip",
+    "document": "агропрогресс 1/Постановление Правительства Саратовской области от 30 августа 2021 г N 715 П Об .pdf",
+    "sha256": "d733e6fa4af236b425d6268cb7712b2317491d8610d4e9c4aeec24670dd3e996",
+    "text": "28.txt",
+    "characters": 80187
+  },
+  {
+    "archive": "source-7.zip",
+    "document": "агропрогресс 1/Приказ МинСХ СО 104-пр сх территории и агломерации Агропрогресс -сжатый.pdf",
+    "sha256": "50e6400c64e727a56016a41992fbae9e9b89810363b65a8bcdbef995cce178ae",
+    "text": "29.txt",
+    "characters": 1250
+  },
+  {
+    "archive": "source-7.zip",
+    "document": "агропрогресс 1/Приказ МСХ РФ №185 Перечень затрат .pdf",
+    "sha256": "1222b4aabe10144cf701ef5c327d5caaa2c549e45d355db12f6564a9974763d3",
+    "text": "30.txt",
+    "characters": 296
+  },
+  {
+    "archive": "source-7.zip",
+    "document": "агропрогресс 1/Приказ мсх СО 114-пр бизнес-план Агропрогресс.pdf",
+    "sha256": "edcb9b5de975380ab20c0c0b00b97e077a2d6d95617640b3b6e4cc114f3a25f4",
+    "text": "31.txt",
+    "characters": 2471
+  },
+  {
+    "archive": "source-8.zip",
+    "document": "Объявление об отборе.pdf",
+    "sha256": "94c882906b55f19a5911ff5c4280bf425f99342289a4094b466e7b62c852e299",
+    "text": "32.txt",
+    "characters": 152
+  },
+  {
+    "archive": "source-8.zip",
+    "document": "Постановление 292-П Об_утверждении_Положения_о_предоставлении_субсидий_из_областного_бюджета_на_реализацию_мероприятий,_.pdf",
+    "sha256": "83b0458392d563207fd2e346c17178f81dbadb15c3ce4213b3ecd3debd0c0625",
+    "text": "33.txt",
+    "characters": 54148
+  },
+  {
+    "archive": "source-9.zip",
+    "document": "Подписанное объявление об отборе.pdf",
+    "sha256": "7f75902134036a35687279947c847a5db6fc932a3bb4f97607e595c7df73fb26",
+    "text": "34.txt",
+    "characters": 22601
+  },
+  {
+    "archive": "source-9.zip",
+    "document": "Постановление Правительства Саратовской области от 29 февраля 2024 г N 1....pdf",
+    "sha256": "54218109b8730ad07b645cdcafc1b112bdcd825f8d465aa094e980a134d0841a",
+    "text": "35.txt",
+    "characters": 122801
+  },
+  {
+    "archive": "source-9.zip",
+    "document": "Приказ министерства сельского хозяйства Саратовской области от 5 марта 2....pdf",
+    "sha256": "b114fded19c6016a3a68d8203a88131903fefc0b40abf4c8991275cf1446d425",
+    "text": "36.txt",
+    "characters": 147413
+  }
+]

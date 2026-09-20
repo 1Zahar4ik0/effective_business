@@ -1,0 +1,7 @@
+{
+  "seconds": 65.9,
+  "exit_code": 0,
+  "method": "docker compose build --no-cache app",
+  "base_images_preloaded": true,
+  "recorded_at": "2026-09-18T23:25:01.5123660+04:00"
+}

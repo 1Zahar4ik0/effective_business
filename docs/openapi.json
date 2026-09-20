@@ -1,0 +1,2673 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Опора АПК",
+    "description": "Навигатор поддержки. Подбор предварительный. Локальный набор — синтетический.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/official-announcements": {
+      "get": {
+        "summary": "Official Announcements",
+        "description": "Checked monetary facts and dates; not an eligibility decision or a live portal status.",
+        "operationId": "official_announcements_api_official_announcements_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnouncementsView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/config": {
+      "get": {
+        "summary": "Config",
+        "operationId": "config_api_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/demo": {
+      "post": {
+        "summary": "Demo Login",
+        "operationId": "demo_login_api_auth_demo_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/auth/max": {
+      "post": {
+        "summary": "Max Login",
+        "operationId": "max_login_api_auth_max_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaxInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "summary": "Me",
+        "operationId": "me_api_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "logout_api_auth_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "summary": "Profile",
+        "operationId": "profile_api_profile_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessProfile-Output"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Save Profile",
+        "operationId": "save_profile_api_profile_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BusinessProfile-Input"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessProfile-Output"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/catalog": {
+      "get": {
+        "summary": "Catalog",
+        "operationId": "catalog_api_catalog_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MeasureView"
+                  },
+                  "type": "array",
+                  "title": "Response Catalog Api Catalog Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/measures/{measure_id}": {
+      "get": {
+        "summary": "Measure Detail",
+        "operationId": "measure_detail_api_measures__measure_id__get",
+        "parameters": [
+          {
+            "name": "measure_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Measure Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasureView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/matches": {
+      "post": {
+        "summary": "Matches",
+        "operationId": "matches_api_matches_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MatchesView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/preparation-plans": {
+      "get": {
+        "summary": "Plans",
+        "operationId": "plans_api_preparation_plans_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PlanView"
+                  },
+                  "type": "array",
+                  "title": "Response Plans Api Preparation Plans Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create Plan",
+        "operationId": "create_plan_api_preparation_plans_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/preparation-plans/{plan_id}/items/{item_id}": {
+      "patch": {
+        "summary": "Check Item",
+        "operationId": "check_item_api_preparation_plans__plan_id__items__item_id__patch",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Item Id"
+            }
+          },
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ]
+      }
+    },
+    "/api/admin/versions": {
+      "get": {
+        "summary": "Admin Versions",
+        "operationId": "admin_versions_api_admin_versions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MeasureView"
+                  },
+                  "type": "array",
+                  "title": "Response Admin Versions Api Admin Versions Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/admin/measures": {
+      "post": {
+        "summary": "New Measure",
+        "operationId": "new_measure_api_admin_measures_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewMeasure"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasureView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/admin/versions/{version_id}/clone": {
+      "post": {
+        "summary": "Clone Version",
+        "operationId": "clone_version_api_admin_versions__version_id__clone_post",
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasureView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ]
+      }
+    },
+    "/api/admin/versions/{version_id}": {
+      "put": {
+        "summary": "Update Draft",
+        "operationId": "update_draft_api_admin_versions__version_id__put",
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasureView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ]
+      }
+    },
+    "/api/admin/versions/{version_id}/{action}": {
+      "post": {
+        "summary": "Transition",
+        "operationId": "transition_api_admin_versions__version_id___action__post",
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Action"
+            }
+          },
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevisionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasureView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ]
+      }
+    },
+    "/api/max/webhook": {
+      "post": {
+        "summary": "Webhook",
+        "operationId": "webhook_api_max_webhook_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "maxWebhookSecret": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnnouncementSource": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Url"
+          },
+          "document": {
+            "type": "string",
+            "title": "Document"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256"
+          },
+          "finance_page": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Finance Page"
+          },
+          "dates_page": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Dates Page"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "url",
+          "document",
+          "sha256",
+          "finance_page",
+          "dates_page"
+        ],
+        "title": "AnnouncementSource"
+      },
+      "AnnouncementView": {
+        "properties": {
+          "measure_id": {
+            "type": "string",
+            "title": "Measure Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "grant",
+              "subsidy"
+            ],
+            "title": "Category"
+          },
+          "audience": {
+            "type": "string",
+            "title": "Audience"
+          },
+          "round": {
+            "$ref": "#/components/schemas/RoundInput"
+          },
+          "funding_year": {
+            "type": "integer",
+            "maximum": 2100.0,
+            "minimum": 2020.0,
+            "title": "Funding Year"
+          },
+          "budget_rub": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,16}|(?=[\\d.]{1,19}0*$)\\d{0,16}\\.\\d{0,2}0*$)",
+            "title": "Budget Rub"
+          },
+          "recipient_limit_rub": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,16}|(?=[\\d.]{1,19}0*$)\\d{0,16}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipient Limit Rub"
+          },
+          "limit_status": {
+            "type": "string",
+            "enum": [
+              "stated",
+              "not_set_in_announcement"
+            ],
+            "title": "Limit Status"
+          },
+          "finance_note": {
+            "type": "string",
+            "title": "Finance Note"
+          },
+          "legal_edition": {
+            "type": "string",
+            "title": "Legal Edition"
+          },
+          "source": {
+            "$ref": "#/components/schemas/AnnouncementSource"
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked At"
+          },
+          "missing_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Missing Evidence"
+          },
+          "verification_scope": {
+            "type": "string",
+            "const": "announcement_facts_only",
+            "title": "Verification Scope",
+            "default": "announcement_facts_only"
+          },
+          "deadline_status": {
+            "type": "string",
+            "enum": [
+              "not_started_in_notice",
+              "within_notice_dates",
+              "ended_in_notice"
+            ],
+            "title": "Deadline Status"
+          },
+          "acceptance_status": {
+            "type": "string",
+            "const": "unconfirmed",
+            "title": "Acceptance Status",
+            "default": "unconfirmed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "measure_id",
+          "title",
+          "category",
+          "audience",
+          "round",
+          "funding_year",
+          "budget_rub",
+          "limit_status",
+          "finance_note",
+          "legal_edition",
+          "source",
+          "checked_at",
+          "missing_evidence",
+          "deadline_status"
+        ],
+        "title": "AnnouncementView"
+      },
+      "AnnouncementsView": {
+        "properties": {
+          "release_id": {
+            "type": "string",
+            "title": "Release Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AnnouncementView"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "release_id",
+          "items"
+        ],
+        "title": "AnnouncementsView"
+      },
+      "BusinessProfile-Input": {
+        "properties": {
+          "registration_region": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Registration Region"
+          },
+          "activity_region": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Region"
+          },
+          "legal_form": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "ip",
+                  "company",
+                  "cooperative",
+                  "individual"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Form"
+          },
+          "is_kfh": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Kfh"
+          },
+          "tax_regime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "eshn",
+                  "usn",
+                  "npd",
+                  "general"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tax Regime"
+          },
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "crops",
+                  "livestock",
+                  "processing",
+                  "mixed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "equipment",
+                  "construction",
+                  "working_capital",
+                  "consultation"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal"
+          },
+          "expense_stage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "planned",
+                  "incurred"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expense Stage"
+          },
+          "years_active": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Years Active"
+          },
+          "own_funds": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000000000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,13}|(?=[\\d.]{1,16}0*$)\\d{0,13}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Own Funds"
+          },
+          "is_sme": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Sme"
+          },
+          "special_category": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Special Category"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "BusinessProfile"
+      },
+      "BusinessProfile-Output": {
+        "properties": {
+          "registration_region": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Registration Region"
+          },
+          "activity_region": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activity Region"
+          },
+          "legal_form": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "ip",
+                  "company",
+                  "cooperative",
+                  "individual"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Form"
+          },
+          "is_kfh": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Kfh"
+          },
+          "tax_regime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "eshn",
+                  "usn",
+                  "npd",
+                  "general"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tax Regime"
+          },
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "crops",
+                  "livestock",
+                  "processing",
+                  "mixed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "equipment",
+                  "construction",
+                  "working_capital",
+                  "consultation"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal"
+          },
+          "expense_stage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "planned",
+                  "incurred"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expense Stage"
+          },
+          "years_active": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Years Active"
+          },
+          "own_funds": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,13}|(?=[\\d.]{1,16}0*$)\\d{0,13}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Own Funds"
+          },
+          "is_sme": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Sme"
+          },
+          "special_category": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Special Category"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "BusinessProfile"
+      },
+      "CheckInput": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "done": {
+            "type": "boolean",
+            "title": "Done"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "revision",
+          "done"
+        ],
+        "title": "CheckInput"
+      },
+      "CheckView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "UNKNOWN"
+            ],
+            "title": "Status"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "source_ref": {
+            "type": "string",
+            "title": "Source Ref"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/CheckView"
+            },
+            "type": "array",
+            "title": "Children"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "status",
+          "field",
+          "source_ref",
+          "children"
+        ],
+        "title": "CheckView"
+      },
+      "DemoInput": {
+        "properties": {
+          "persona": {
+            "type": "string",
+            "enum": [
+              "farmer",
+              "editor",
+              "second"
+            ],
+            "title": "Persona",
+            "default": "farmer"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "DemoInput"
+      },
+      "Document": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "hint": {
+            "type": "string",
+            "maxLength": 700,
+            "title": "Hint"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "hint"
+        ],
+        "title": "Document"
+      },
+      "DraftInput": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "data": {
+            "$ref": "#/components/schemas/VersionData-Input"
+          },
+          "rounds": {
+            "items": {
+              "$ref": "#/components/schemas/RoundInput"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Rounds"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "revision",
+          "data"
+        ],
+        "title": "DraftInput"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "MatchView": {
+        "properties": {
+          "measure": {
+            "$ref": "#/components/schemas/MeasureView"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "UNKNOWN"
+            ],
+            "title": "Status"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/CheckView"
+            },
+            "type": "array",
+            "title": "Checks"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "measure",
+          "status",
+          "checks"
+        ],
+        "title": "MatchView"
+      },
+      "MatchesView": {
+        "properties": {
+          "evaluation_id": {
+            "type": "string",
+            "title": "Evaluation Id"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/MatchView"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "evaluation_id",
+          "results"
+        ],
+        "title": "MatchesView"
+      },
+      "MaxInput": {
+        "properties": {
+          "init_data": {
+            "type": "string",
+            "maxLength": 16384,
+            "minLength": 1,
+            "title": "Init Data"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "init_data"
+        ],
+        "title": "MaxInput"
+      },
+      "MeasureView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic"
+          },
+          "version_id": {
+            "type": "string",
+            "title": "Version Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "data": {
+            "$ref": "#/components/schemas/VersionData-Output"
+          },
+          "rounds": {
+            "items": {
+              "$ref": "#/components/schemas/RoundView"
+            },
+            "type": "array",
+            "title": "Rounds"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "category",
+          "synthetic",
+          "version_id",
+          "version",
+          "state",
+          "revision",
+          "data",
+          "rounds"
+        ],
+        "title": "MeasureView"
+      },
+      "NewMeasure": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 3,
+            "title": "Title"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "grant",
+              "subsidy",
+              "consultation"
+            ],
+            "title": "Category"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic",
+            "default": false
+          },
+          "data": {
+            "$ref": "#/components/schemas/VersionData-Input"
+          },
+          "rounds": {
+            "items": {
+              "$ref": "#/components/schemas/RoundInput"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Rounds"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "category",
+          "data"
+        ],
+        "title": "NewMeasure"
+      },
+      "PlanDocument": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "hint": {
+            "type": "string",
+            "maxLength": 700,
+            "title": "Hint"
+          },
+          "done": {
+            "type": "boolean",
+            "title": "Done"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "hint",
+          "done"
+        ],
+        "title": "PlanDocument"
+      },
+      "PlanInput": {
+        "properties": {
+          "round_id": {
+            "type": "string",
+            "maxLength": 36,
+            "title": "Round Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "round_id"
+        ],
+        "title": "PlanInput"
+      },
+      "PlanView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PlanDocument"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "measure": {
+            "$ref": "#/components/schemas/MeasureView"
+          },
+          "round_id": {
+            "type": "string",
+            "title": "Round Id"
+          },
+          "needs_review": {
+            "type": "boolean",
+            "title": "Needs Review"
+          },
+          "current_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Version Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "revision",
+          "created_at",
+          "items",
+          "measure",
+          "round_id",
+          "needs_review",
+          "current_version_id"
+        ],
+        "title": "PlanView"
+      },
+      "RevisionInput": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Revision"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "revision"
+        ],
+        "title": "RevisionInput"
+      },
+      "RoundInput": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Starts At"
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Ends At"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone",
+            "default": "Europe/Moscow"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "announced",
+              "suspended",
+              "cancelled",
+              "unknown"
+            ],
+            "title": "State",
+            "default": "announced"
+          },
+          "application_url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Application Url"
+          },
+          "channel": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Channel"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "starts_at",
+          "ends_at",
+          "application_url",
+          "channel"
+        ],
+        "title": "RoundInput"
+      },
+      "RoundView": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Starts At"
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Ends At"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone",
+            "default": "Europe/Moscow"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "announced",
+              "suspended",
+              "cancelled",
+              "unknown"
+            ],
+            "title": "State",
+            "default": "announced"
+          },
+          "application_url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Application Url"
+          },
+          "channel": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Channel"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "availability": {
+            "type": "string",
+            "title": "Availability"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "starts_at",
+          "ends_at",
+          "application_url",
+          "channel",
+          "id",
+          "availability"
+        ],
+        "title": "RoundView"
+      },
+      "Rule-Input": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "in",
+              "gte",
+              "lte",
+              "all",
+              "any",
+              "manual"
+            ],
+            "title": "Op"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/Rule-Input"
+            },
+            "type": "array",
+            "maxItems": 15,
+            "title": "Children"
+          },
+          "source_ref": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Source Ref"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "op",
+          "source_ref"
+        ],
+        "title": "Rule"
+      },
+      "Rule-Output": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "in",
+              "gte",
+              "lte",
+              "all",
+              "any",
+              "manual"
+            ],
+            "title": "Op"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/Rule-Output"
+            },
+            "type": "array",
+            "maxItems": 15,
+            "title": "Children"
+          },
+          "source_ref": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Source Ref"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "op",
+          "source_ref"
+        ],
+        "title": "Rule"
+      },
+      "SessionView": {
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserView"
+          },
+          "csrf": {
+            "type": "string",
+            "title": "Csrf"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "user",
+          "csrf"
+        ],
+        "title": "SessionView"
+      },
+      "Source": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Url"
+          },
+          "reference": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Reference"
+          },
+          "published_on": {
+            "type": "string",
+            "maxLength": 30,
+            "title": "Published On"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "url",
+          "reference",
+          "published_on"
+        ],
+        "title": "Source"
+      },
+      "UserView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "demo": {
+            "type": "boolean",
+            "title": "Demo"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "role",
+          "demo"
+        ],
+        "title": "UserView"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VersionData-Input": {
+        "properties": {
+          "summary": {
+            "type": "string",
+            "maxLength": 1500,
+            "minLength": 10,
+            "title": "Summary"
+          },
+          "benefit": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Benefit"
+          },
+          "operator": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Operator"
+          },
+          "obligations": {
+            "type": "string",
+            "maxLength": 1500,
+            "title": "Obligations"
+          },
+          "contact": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "Contact"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/Rule-Input"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Rules"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Documents"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Sources"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          },
+          "verification_status": {
+            "type": "string",
+            "enum": [
+              "unverified",
+              "verified",
+              "conflict"
+            ],
+            "title": "Verification Status",
+            "default": "unverified"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "legal_edition": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Legal Edition",
+            "default": ""
+          },
+          "research_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Research Checked At"
+          },
+          "missing_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Missing Evidence"
+          },
+          "verification_notes": {
+            "type": "string",
+            "maxLength": 4000,
+            "title": "Verification Notes",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "summary",
+          "benefit",
+          "operator",
+          "obligations",
+          "contact",
+          "sources"
+        ],
+        "title": "VersionData"
+      },
+      "VersionData-Output": {
+        "properties": {
+          "summary": {
+            "type": "string",
+            "maxLength": 1500,
+            "minLength": 10,
+            "title": "Summary"
+          },
+          "benefit": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Benefit"
+          },
+          "operator": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Operator"
+          },
+          "obligations": {
+            "type": "string",
+            "maxLength": 1500,
+            "title": "Obligations"
+          },
+          "contact": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "Contact"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/Rule-Output"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Rules"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Documents"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Sources"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          },
+          "verification_status": {
+            "type": "string",
+            "enum": [
+              "unverified",
+              "verified",
+              "conflict"
+            ],
+            "title": "Verification Status",
+            "default": "unverified"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "legal_edition": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Legal Edition",
+            "default": ""
+          },
+          "research_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Research Checked At"
+          },
+          "missing_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Missing Evidence"
+          },
+          "verification_notes": {
+            "type": "string",
+            "maxLength": 4000,
+            "title": "Verification Notes",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "summary",
+          "benefit",
+          "operator",
+          "obligations",
+          "contact",
+          "sources"
+        ],
+        "title": "VersionData"
+      }
+    },
+    "securitySchemes": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "opora_session",
+        "description": "HttpOnly cookie после /api/auth/max; /api/auth/demo только локально"
+      },
+      "csrfHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-CSRF-Token",
+        "description": "Значение csrf из входа или /api/auth/me"
+      },
+      "maxWebhookSecret": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Max-Bot-Api-Secret"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Текущий сервер; публичный HTTPS пока не настроен"
+    }
+  ]
+}

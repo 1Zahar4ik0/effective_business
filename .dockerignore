@@ -1,0 +1,15 @@
+**
+!Dockerfile
+!backend/
+!backend/**
+!frontend/
+!frontend/**
+!data/
+!data/**
+**/__pycache__
+**/.pytest_cache
+frontend/node_modules
+frontend/dist
+frontend/*.tsbuildinfo
+backend/tests
+data/official/sources

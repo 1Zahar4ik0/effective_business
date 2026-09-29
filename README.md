@@ -119,11 +119,11 @@ docker compose version
 
 ## 5. Перенесите текущие исходники
 
-Размещайте проект в `/opt/opora-apk`. Комплект `output/submission` зафиксирован 18.09.2026 и не обновляется автоматически при изменениях проекта. Для текущей версии создайте архив на Windows без `.env`, локальной БД, зависимостей и временных файлов:
+Размещайте проект в `/opt/opora-apk`. Материалы сдачи хранятся отдельно от репозитория. Для текущей версии создайте архив на Windows без `.env`, локальной БД, зависимостей и временных файлов:
 
 ```powershell
 Set-Location C:\EffectiveBusiness
-tar.exe -czf "$env:TEMP\opora-apk-deploy.tar.gz" --exclude=__pycache__ --exclude=.pytest_cache --exclude=node_modules --exclude=dist --exclude=*.tsbuildinfo --exclude=data/official/sources backend frontend data deploy docs Dockerfile .dockerignore compose.production.yaml compose.max-ca.yaml DATA-API.yaml README.md AGENTS.md ARCHITECTURE.md
+tar.exe -czf "$env:TEMP\opora-apk-deploy.tar.gz" --exclude=__pycache__ --exclude=.pytest_cache --exclude=node_modules --exclude=dist --exclude=*.tsbuildinfo --exclude=data/official/sources backend frontend data deploy docs Dockerfile .dockerignore compose.production.yaml compose.max-ca.yaml DATA-API.yaml README.md ARCHITECTURE.md
 Get-FileHash "$env:TEMP\opora-apk-deploy.tar.gz" -Algorithm SHA256
 scp "$env:TEMP\opora-apk-deploy.tar.gz" LOGIN@SERVER_IP:/tmp/opora-apk-deploy.tar.gz
 ```
@@ -480,7 +480,7 @@ opora-compose exec -T app alembic -c backend/alembic.ini check
 
 Это команды переключения после обязательных предварительных проверок, а не
 замена backup/QA. Не перезаписывайте расходящиеся с манифестом файлы сервера.
-Процедура и границы текущего отката: docs/HANDOFF-DEPLOY.md. Для подготовленного
+Процедура и границы текущего отката: docs/RELEASE-20260929-RC2.md. Для подготовленного
 отката этой поставки: `bash /etc/opora-apk/deploy-20260928/rollback.sh`.
 Он сохраняет актуальную БД, предварительно делает новый dump и возвращает образ r3.
 Не выполняйте downgrade или восстановление старого dump поверх новых данных.
@@ -504,7 +504,7 @@ Override использует публичный CA bundle tmp/max-ca-bundle.pem
 Реальные редакции импортируйте через `import_official.py --apply --stage-revision ID`.
 Публикация — только после проверки источников через draft → review → publish
 с явно подтверждёнными правами редактора. Состояние каталога и инструкция web-MAX/
-Android находятся в docs/HANDOFF-DEPLOY.md; старые проверки устройств не заменяют новые.
+Android находятся в docs/RELEASE-20260929-RC2.md; старые проверки устройств не заменяют новые.
 
 ## Проверка подбора на учебном примере
 
@@ -544,3 +544,7 @@ python backend/publish_reference.py --apply --actor-max-id <MAX_ID>
 в аргументах. Для работы из исходников нужен настроенный DATABASE_URL и MAX_ADMIN_IDS.
 Текущий сервер запускает готовый образ; его старый checkout не является исходниками rc2.
 Сначала разверните новый source.zip перед следующей сборкой на сервере.
+
+
+## Материалы сдачи
+Папка output не входит в Git. Комплект для проверки подготовлен отдельно в D:\toResult: презентация, архив исходников, API и инструкция. Секретов в комплекте нет.

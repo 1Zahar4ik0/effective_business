@@ -18,7 +18,6 @@ for folder in ("backend", "frontend", "data", "docs", "deploy"):
         files.append(path)
 for name in (
     "README.md",
-    "AGENTS.md",
     "ARCHITECTURE.md",
     "Dockerfile",
     "compose.yaml",

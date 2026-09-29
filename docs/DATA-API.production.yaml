@@ -2,7 +2,7 @@
   "format": "opora-api-scenarios/1",
   "name": "Опора АПК",
   "base_url": "https://opora-apk.159-194-249-97.sslip.io",
-  "description": "Публичные read-only проверки. Защищённый путь требует настоящей MAX-сессии; см. ACCESS.md. Полный production-подбор не заявляется проверенным.",
+  "description": "Публичные проверки HTTPS. Защищённый путь проверяется в настоящей MAX-сессии; инструкция — README.md.",
   "steps": [
     {
       "method": "GET",

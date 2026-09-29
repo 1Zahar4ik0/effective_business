@@ -29,9 +29,6 @@ output/deploy-20260928/
 
 *.tsbuildinfo
 
-# Generated release archives and private jury handoff stay local.
-/output/*
-!/output/submission/
-!/output/submission-20260929-rc2/
-/output/submission-20260929-rc2/*
-!/output/submission-20260929-rc2/public/
+/output/
+/.agents/
+/.codex/

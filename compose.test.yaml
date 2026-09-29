@@ -9,6 +9,7 @@ services:
     volumes:
       - ./backend/tests:/app/backend/tests:ro
       - ./docs/openapi.json:/app/docs/openapi.json:ro
+      - ./data/official/sources/catalog-20260928:/app/data/official/sources/catalog-20260928:ro
     command: ["sh", "-c", "alembic -c backend/alembic.ini upgrade head && pytest backend/tests -q -p no:cacheprovider"]
     depends_on:
       db:

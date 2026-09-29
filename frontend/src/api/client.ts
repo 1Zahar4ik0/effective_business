@@ -11,6 +11,7 @@ export let csrf = "";
 export function setSession(session: Session | null) {
   csrf = session?.csrf || "";
 }
+type ErrorBody = { detail?: unknown; errors?: { field: string; message: string }[] };
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -26,15 +27,20 @@ export async function api<T>(path: string, method = "GET", body?: unknown): Prom
     headers: { "Content-Type": "application/json", "X-App-Request": "1", "X-CSRF-Token": csrf },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  const data = await response.json();
+  // Прокси (429, 502, 413) отвечает HTML, а не JSON.
+  const data: unknown = await response.json().catch(() => null);
   if (!response.ok) {
-    const fields = data.errors
-      ?.map((e: { field: string; message: string }) => `${e.field}: ${e.message}`)
-      .join("; ");
-    throw new ApiError(
-      (data.detail || "Не удалось выполнить запрос") + (fields ? ": " + fields : ""),
-      response.status,
-    );
+    const error = data as ErrorBody | null;
+    const fields = error?.errors?.map((e) => `${e.field}: ${e.message}`).join("; ");
+    const detail =
+      (typeof error?.detail === "string" && error.detail) ||
+      (response.status === 429
+        ? "Слишком много запросов. Подождите минуту и повторите"
+        : response.status >= 500
+          ? "Сервер временно недоступен. Повторите позже"
+          : "Не удалось выполнить запрос");
+    throw new ApiError(detail + (fields ? ": " + fields : ""), response.status);
   }
+  if (data === null) throw new ApiError("Сервер вернул некорректный ответ", response.status);
   return data as T;
 }

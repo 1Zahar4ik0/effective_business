@@ -68,6 +68,21 @@ def serialize_measure(db: Session, version: Version):
     }
 
 
+def evaluation_snapshot(results: list[dict]) -> list[dict]:
+    # Текст опубликованной версии не меняется и доступен по version_id, копировать его не нужно.
+    return [
+        {
+            **result,
+            "measure": {k: v for k, v in result["measure"].items() if k != "data"},
+            "documents": [
+                {"id": d["id"], "applicability": d["applicability"], "check": d["check"]}
+                for d in result["documents"]
+            ],
+        }
+        for result in results
+    ]
+
+
 def serialize_plan(db: Session, plan: Plan):
     version = db.get(Version, plan.version_id)
     current = current_version(db, version.measure_id)

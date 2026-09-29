@@ -95,6 +95,21 @@ declare global {
     };
   }
 }
+function maxUserId(initData: string): string | null {
+  try {
+    const id = JSON.parse(new URLSearchParams(initData).get("user") || "null")?.id;
+    return Number.isSafeInteger(id) && id > 0 ? `max:${id}` : null;
+  } catch {
+    return null;
+  }
+}
+function primaryRound(m: Measure) {
+  return (
+    m.rounds.find((r) => r.availability === "open") ??
+    m.rounds.find((r) => !["closed", "cancelled"].includes(r.availability)) ??
+    m.rounds[m.rounds.length - 1]
+  );
+}
 function Badge({ kind, children }: { kind?: string; children: React.ReactNode }) {
   return <span className={"badge " + (kind || "")}>{children}</span>;
 }
@@ -184,18 +199,25 @@ function App() {
           document.head.appendChild(script);
         });
       }
-      let signedIn = false;
+      const initData = c.max_configured ? window.WebApp?.initData : undefined;
+      let current: Session | null = null;
       try {
-        accept(await api<Session>("/auth/me"));
-        signedIn = true;
+        current = await api<Session>("/auth/me");
       } catch (e) {
         if (!(e instanceof ApiError) || e.status !== 401) throw e;
-        if (c.max_configured && window.WebApp?.initData) {
-          accept(await api<Session>("/auth/max", "POST", { init_data: window.WebApp.initData }));
-          signedIn = true;
-        }
       }
-      if (signedIn) await loadPersonal();
+      const launchUserId = initData ? maxUserId(initData) : null;
+      if (current && launchUserId && current.user.id !== launchUserId) {
+        // Сохранённая сессия принадлежит другому аккаунту MAX: выходим и входим заново.
+        setSession(current);
+        await api("/auth/logout", "POST");
+        current = null;
+      }
+      if (!current && initData) {
+        current = await api<Session>("/auth/max", "POST", { init_data: initData });
+      }
+      accept(current);
+      if (current) await loadPersonal();
       window.WebApp?.ready?.();
     });
   }, []);
@@ -765,8 +787,8 @@ function MeasureCard({ m, match, onOpen }: { m: Measure; match?: Match; onOpen: 
       <div className="card-status">
         {match && <Badge kind={match.status}>{statusName[match.status]}</Badge>}
         <span>
-          <i className={"dot " + (m.rounds[0]?.availability === "open" ? "" : "gray")} />
-          {availabilityName[m.rounds[0]?.availability] || "Нет отбора"}
+          <i className={"dot " + (primaryRound(m)?.availability === "open" ? "" : "gray")} />
+          {availabilityName[primaryRound(m)?.availability] || "Нет отбора"}
         </span>
       </div>
       <button className="card-link" onClick={onOpen}>
@@ -1163,7 +1185,7 @@ function Detail({
   busy: boolean;
 }) {
   const [roundId, setRoundId] = useState(
-    m.rounds.find((r) => r.id === selectedRoundId)?.id || m.rounds[0]?.id || "",
+    m.rounds.find((r) => r.id === selectedRoundId)?.id || primaryRound(m)?.id || "",
   );
   const r = m.rounds.find((r) => r.id === roundId);
   const dialog = React.useRef<HTMLDialogElement>(null);

@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 
 import pytest
 from sqlalchemy import select, func
+from app.catalog import evaluation_snapshot
 from app.config import settings
 from app.db import SessionLocal
 from app.matching import evaluate_rule, availability
@@ -166,9 +167,13 @@ def test_matching_snapshot_survives_profile_edit(client):
         },
     )
     result = client.post("/api/matches").json()
+    repeat = client.post("/api/matches").json()
     client.put("/api/profile", json={"registration_region": "other", "is_kfh": False})
     with SessionLocal() as db:
         snapshot = db.get(Evaluation, result["evaluation_id"])
         assert snapshot.profile["registration_region"] == "64"
-        assert snapshot.results == result["results"]
+        assert snapshot.results == evaluation_snapshot(result["results"])
+        assert all("data" not in r["measure"] and r["measure"]["version_id"] for r in snapshot.results)
+        assert repeat["evaluation_id"] == result["evaluation_id"]
+        assert db.scalar(select(func.count()).select_from(Evaluation)) == 1
         assert snapshot.created_at.tzinfo is not None

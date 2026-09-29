@@ -12,6 +12,7 @@ from .catalog import (
     add_rounds,
     audit,
     current_version,
+    evaluation_snapshot,
     lock_version,
     publication_checks,
     serialize_measure,
@@ -229,12 +230,22 @@ def matches(user: User = Depends(current_user), db: Session = Depends(get_db)):
         )
     )
     saved = MatchesView(evaluation_id=str(uuid4()), results=results)
+    snapshot = evaluation_snapshot(saved.model_dump(mode="json")["results"])
+    last = db.scalar(
+        select(Evaluation)
+        .where(Evaluation.user_id == user.id)
+        .order_by(Evaluation.created_at.desc())
+        .limit(1)
+    )
+    if last and last.profile == profile_.data and last.results == snapshot:
+        saved.evaluation_id = last.id
+        return saved
     db.add(
         Evaluation(
             id=saved.evaluation_id,
             user_id=user.id,
             profile=deepcopy(profile_.data),
-            results=saved.model_dump(mode="json")["results"],
+            results=snapshot,
         )
     )
     db.commit()

@@ -1,0 +1,131 @@
+{
+  "format": "opora-api-scenarios/1",
+  "name": "Опора АПК",
+  "base_url": "https://opora-apk.159-194-249-97.sslip.io",
+  "description": "Публичные read-only проверки. Защищённый путь требует настоящей MAX-сессии; см. ACCESS.md. Полный production-подбор не заявляется проверенным.",
+  "steps": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "expect": 200,
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "status",
+          "environment"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/config",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "expect": 200,
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "demo",
+          "max_configured"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/catalog",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "expect": 200,
+      "response": {
+        "content_type": "application/json",
+        "type": "array",
+        "required": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/official-announcements",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "expect": 200,
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "items"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/profile",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "expect": 401,
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "detail"
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/versions",
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "expect": 401,
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "detail"
+        ]
+      }
+    }
+  ],
+  "protected_scenarios": [
+    {
+      "role": "farmer",
+      "flow": [
+        "POST /api/auth/max: подписанные стартовые данные реального MAX",
+        "PUT /api/profile: Cookie и X-CSRF-Token",
+        "POST /api/matches",
+        "GET /api/measures/{id}",
+        "POST /api/preparation-plans",
+        "PATCH /api/preparation-plans/{id}/items/{item_id}"
+      ],
+      "status": "awaiting published real conditions and jury MAX account"
+    },
+    {
+      "role": "editor",
+      "flow": [
+        "GET /api/admin/versions"
+      ],
+      "status": "requires separately authorized jury account"
+    }
+  ]
+}

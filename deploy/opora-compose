@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+cd /opt/opora-apk
+exec docker compose --env-file /etc/opora-apk/production.env -f compose.production.yaml -f compose.max-ca.yaml --profile max "$@"

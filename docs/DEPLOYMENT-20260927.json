@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-27",
+  "origin": "https://opora-apk.159-194-249-97.sslip.io",
+  "bot_link": "https://max.ru/t761_hakaton_max_bot",
+  "source_archive": "opora-apk-source-20260927.tar.gz",
+  "source_sha256": "2846548e07f9aa9a7484ae14fcb84bb35bb52ecc5de859feeb344b162dda64ee",
+  "base_commit": "5441a18dfaa7c90e13293c7204b587fb1cba2d11",
+  "working_tree_changes": true,
+  "initial_server_build_seconds": 25,
+  "initial_build_included_base_images": true,
+  "tests_passed": 46,
+  "catalog_persistence_sha256": "5ba33f5f72d291c87b9dda9eca36b9f67be31bd5362fa87f06e6686344e7e3d2",
+  "max_api_authenticated": true,
+  "webhook_registered": true,
+  "max_real_client_login_tested": false,
+  "production_real_drafts": 10,
+  "production_published_versions": 0,
+  "production_synthetic_measures": 0
+}

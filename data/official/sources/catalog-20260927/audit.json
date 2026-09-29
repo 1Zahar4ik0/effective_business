@@ -1,0 +1,21 @@
+{
+  "catalog_count": 10,
+  "changed_records": [
+    "saratov-students",
+    "saratov-farm"
+  ],
+  "unchanged_records": 8,
+  "fully_ready_measures": 0,
+  "builder_deterministic": true,
+  "baseline_files_preserved": 56,
+  "unintended_baseline_changes": [],
+  "successful_retrievals": 28,
+  "failed_retrievals": 1,
+  "retrieval_checksums_valid": true,
+  "tests": {
+    "passed": 38,
+    "warnings": 2,
+    "database": "navigator_test on opora-apk-qa-r4-db-1",
+    "production_changed": false
+  }
+}

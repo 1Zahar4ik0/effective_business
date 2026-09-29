@@ -1,0 +1,10 @@
+import { writeFile } from "node:fs/promises";
+import openapiTS, { astToString } from "openapi-typescript";
+import ts from "typescript";
+const schema = new URL("../../docs/openapi.json", import.meta.url);
+const output = new URL("../src/api/schema.d.ts", import.meta.url);
+const definitions = astToString(await openapiTS(schema));
+const source = ts.createSourceFile("schema.d.ts", definitions, ts.ScriptTarget.Latest, true);
+const printer = ts.createPrinter({ removeComments: true });
+await writeFile(output, printer.printFile(source));
+console.log("Generated src/api/schema.d.ts");

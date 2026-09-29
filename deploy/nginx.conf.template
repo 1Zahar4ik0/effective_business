@@ -1,4 +1,3 @@
-# No query strings, bodies, Authorization, cookies or launch parameters in access logs.
 log_format safe '$remote_addr $request_method $uri $status';
 access_log /var/log/nginx/access.log safe;
 server_tokens off;
@@ -8,7 +7,11 @@ limit_req_status 429;
 server {
     listen 80;
     server_name ${DOMAIN};
-    return 308 https://${DOMAIN}$request_uri;
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+        try_files $uri =404;
+    }
+    location / { return 308 https://${DOMAIN}$request_uri; }
 }
 server {
     listen 443 ssl;
@@ -20,7 +23,6 @@ server {
     client_max_body_size 256k;
     client_body_timeout 15s;
     add_header Strict-Transport-Security "max-age=31536000" always;
-    # MAX web embeds the app: do not add X-Frame-Options DENY/SAMEORIGIN.
     proxy_set_header Host ${DOMAIN};
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header X-Forwarded-For $remote_addr;
@@ -31,7 +33,6 @@ server {
         proxy_pass http://app:8000;
     }
     location = /api/max/webhook {
-        # MAX may deliver many users through the same IP; keep separate from per-user throttling.
         proxy_pass http://app:8000;
     }
     location /api/ {

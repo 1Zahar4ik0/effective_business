@@ -1,0 +1,48 @@
+name: opora-submission-20260929
+services:
+  db:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: navigator_test
+      POSTGRES_USER: navigator
+      POSTGRES_PASSWORD: isolated-qa-only
+    volumes: ["qa_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U navigator -d navigator_test"]
+      interval: 2s
+      retries: 30
+  app:
+    image: opora-apk-submission:20260929
+    environment: &qa
+      APP_ENV: demo
+      SEED_DEMO: "true"
+      DATABASE_URL: postgresql+psycopg://navigator:isolated-qa-only@db:5432/navigator_test
+      PUBLIC_ORIGIN: http://localhost:8001
+      STATIC_DIR: /app/frontend/dist
+      MAX_BOT_TOKEN: ""
+      MAX_WEBHOOK_SECRET: ""
+    ports: ["127.0.0.1:8001:8000"]
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 3s
+      retries: 30
+  tests:
+    image: opora-apk-submission:20260929
+    profiles: ["test"]
+    environment:
+      <<: *qa
+      APP_ENV: test
+      SEED_DEMO: "false"
+      TEST_DATABASE_URL: postgresql+psycopg://navigator:isolated-qa-only@db:5432/navigator_test
+    volumes:
+      - ./backend/tests:/app/backend/tests:ro
+      - ./data/official/sources:/app/data/official/sources:ro
+      - ./docs:/app/docs:ro
+      - ./frontend/public:/app/frontend/public:ro
+    command: ["sh", "-c", "alembic -c backend/alembic.ini upgrade head && alembic -c backend/alembic.ini check && pytest backend/tests -q -p no:cacheprovider"]
+    depends_on:
+      db: {condition: service_healthy}
+volumes:
+  qa_data:

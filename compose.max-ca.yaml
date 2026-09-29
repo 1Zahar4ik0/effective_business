@@ -1,5 +1,3 @@
-# Дополнение к compose.production.yaml при подключении MAX.
-# Указать абсолютный путь к проверенному полному CA bundle, не приватному ключу.
 services:
   app:
     environment:

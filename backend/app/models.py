@@ -1,5 +1,16 @@
 from datetime import datetime
-from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, Index, text
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    Index,
+    text,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 from .db import Base, utcnow
 
@@ -28,9 +39,13 @@ class UsedLaunch(Base):
 
 class Profile(Base):
     __tablename__ = "profiles"
-    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
     data: Mapped[dict] = mapped_column(JSON)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow
+    )
 
 
 class Measure(Base):
@@ -43,27 +58,43 @@ class Measure(Base):
 
 class Version(Base):
     __tablename__ = "measure_versions"
-    __table_args__ = (UniqueConstraint("measure_id", "number"),
-                      Index("uq_measure_published", "measure_id", unique=True,
-                            postgresql_where=text("state = 'published'")))
+    __table_args__ = (
+        UniqueConstraint("measure_id", "number"),
+        Index(
+            "uq_measure_published",
+            "measure_id",
+            unique=True,
+            postgresql_where=text("state = 'published'"),
+        ),
+    )
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     measure_id: Mapped[str] = mapped_column(ForeignKey("measures.id"), index=True)
     number: Mapped[int] = mapped_column(Integer)
     state: Mapped[str] = mapped_column(String(20), default="draft")
     revision: Mapped[int] = mapped_column(Integer, default=1)
     data: Mapped[dict] = mapped_column(JSON)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow
+    )
 
 
 class SelectionRound(Base):
     __tablename__ = "selection_rounds"
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
-    version_id: Mapped[str] = mapped_column(ForeignKey("measure_versions.id"), index=True)
+    version_id: Mapped[str] = mapped_column(
+        ForeignKey("measure_versions.id"), index=True
+    )
     code: Mapped[str] = mapped_column(String(100))
     starts_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     ends_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     timezone: Mapped[str] = mapped_column(String(50), default="Europe/Moscow")
     state: Mapped[str] = mapped_column(String(20), default="announced")
+    acceptance_status: Mapped[str] = mapped_column(
+        String(20), default="unconfirmed", server_default="unconfirmed"
+    )
+    acceptance_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     application_url: Mapped[str] = mapped_column(Text)
     channel: Mapped[str] = mapped_column(String(100))
 
@@ -74,7 +105,9 @@ class Evaluation(Base):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
     profile: Mapped[dict] = mapped_column(JSON)
     results: Mapped[list] = mapped_column(JSON)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow
+    )
 
 
 class Plan(Base):
@@ -85,8 +118,11 @@ class Plan(Base):
     version_id: Mapped[str] = mapped_column(ForeignKey("measure_versions.id"))
     round_id: Mapped[str] = mapped_column(ForeignKey("selection_rounds.id"))
     items: Mapped[list] = mapped_column(JSON)
+    assessment: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     revision: Mapped[int] = mapped_column(Integer, default=1)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow
+    )
 
 
 class AuditEvent(Base):
@@ -95,7 +131,9 @@ class AuditEvent(Base):
     actor_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
     action: Mapped[str] = mapped_column(String(50))
     entity_id: Mapped[str] = mapped_column(String(80))
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow
+    )
 
 
 class BotEvent(Base):
@@ -104,4 +142,6 @@ class BotEvent(Base):
     state: Mapped[str] = mapped_column(String(20), default="pending")
     reply: Mapped[dict] = mapped_column(JSON)
     attempts: Mapped[int] = mapped_column(Integer, default=0)
-    next_attempt: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    next_attempt: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow
+    )

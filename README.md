@@ -1,8 +1,30 @@
 # Полное развёртывание «Опора АПК»
 
-Инструкция для текущих исходников. Локальный Docker-запуск проверен. Внешнее размещение, публичный сертификат и настоящий MAX пока не настроены: соответствующие шаги ниже являются инструкцией, а не отчётом об успешном запуске.
+Актуальная проверенная версия: **opora-apk-20260929-rc2**. [Отчёт сборки и ограничения](docs/RELEASE-20260929-RC2.md).
+Навигатор для КФХ и сельскохозяйственных ИП Саратовской области: анкета, объяснимый подбор, карточка отбора, план документов и официальный маршрут. FastAPI + React/TypeScript + PostgreSQL, запуск Docker Compose. Опубликованы 10 реальных справочных карточек с сохранением планов. Полный допуск остаётся предметом проверки; локальная демонстрация явно синтетическая.
 
-**Текущее ограничение владельца:** токен MAX хранится только на этом компьютере и передаётся только официальному API MAX. Не переносите `.env` или токен на сервер по инструкции ниже без отдельного изменения этого решения. Что заполнить для текущего запуска — [docs/USER-ACTIONS.md](docs/USER-ACTIONS.md).
+
+Инструкция полного развёртывания. Действующий стенд: https://opora-apk.159-194-249-97.sslip.io/ .
+Бот: https://max.ru/t761_hakaton_max_bot . Доступ владельца: `ssh effectivebusiness`.
+Шаги привязки мини-приложения — [docs/USER-ACTIONS.md](docs/USER-ACTIONS.md).
+
+По разрешению владельца от 27.09.2026 секреты рабочего стенда хранятся на его VPS
+в `/etc/opora-apk/production.env` (0600, каталог 0700), вне исходников и сборки.
+Токен отправляется только официальному API MAX. Локальный `.env` не изменён.
+
+Для уже установленного сервера после SSH используйте:
+
+```bash
+opora-compose ps
+opora-compose exec -T app python backend/max_preflight.py
+# Повторный запуск уже проверенного образа:
+opora-compose up -d --no-build --wait
+opora-compose exec -T proxy nginx -s reload
+```
+
+Команда `opora-compose` установлена из `deploy/opora-compose`; объединяет только
+production и MAX CA, включает worker. Не выводите `config` без `--quiet`.
+Для нового сервера выполните шаги ниже.
 
 ## 1. Выберите окружение
 
@@ -69,7 +91,7 @@ docker compose up -d --wait
 3. Открытые TCP 80/443. SSH разрешите с адресов администраторов. PostgreSQL и порт приложения 8000 наружу не публикуются.
 4. Созданный бот MAX, токен и доступ к настройке мини-приложения. Регистрация и модерация выполняются в кабинете платформы: [инструкция MAX](https://dev.max.ru/docs/chatbots/bots-create/create).
 
-Для предварительной диагностики токен можно сохранить в `C:\EffectiveBusiness\.env`, строка `MAX_BOT_TOKEN=`. Не вставляйте его в `.env.example`, React, README или чат. На сервере используется отдельный `.env.production`.
+Для предварительной диагностики токен можно сохранить в `C:\EffectiveBusiness\.env`, строка `MAX_BOT_TOKEN=`. Не вставляйте его в `.env.example`, React, README или чат. На сервере используется отдельный `/etc/opora-apk/production.env`.
 
 ## 4. Установите Docker на сервере
 
@@ -123,9 +145,10 @@ cd /opt/opora-apk
 ```bash
 cd /opt/opora-apk
 umask 077
-test -f .env.production || cp deploy/production.env.example .env.production
-chmod 600 .env.production
-nano .env.production
+install -d -m 0700 /etc/opora-apk
+test -f /etc/opora-apk/production.env || cp deploy/production.env.example /etc/opora-apk/production.env
+chmod 600 /etc/opora-apk/production.env
+nano /etc/opora-apk/production.env
 ```
 
 | Переменная | Значение |
@@ -144,19 +167,19 @@ nano .env.production
 
 ```bash
 cd /opt/opora-apk
-dc() { docker compose --env-file .env.production -f compose.production.yaml "$@"; }
+dc() { docker compose --env-file /etc/opora-apk/production.env -f compose.production.yaml "$@"; }
 dc config --quiet
 ```
 
 При новом SSH-входе повторите `cd` и определение функции. Не вызывайте `config` без `--quiet`: полный вывод раскрывает окружение.
 
-Если TLS официального API MAX требует дополнительной цепочки доверия, получите проверенный полный CA bundle по [документации MAX](https://dev.max.ru/docs-api/changelog-api), сохраните его на сервере и добавьте `MAX_CA_BUNDLE_HOST=/абсолютный/путь/ca-bundle.pem` в `.env.production`. Замените функцию:
+Если TLS официального API MAX требует дополнительной цепочки доверия, получите проверенный полный CA bundle по [документации MAX](https://dev.max.ru/docs-api/changelog-api), сохраните его на сервере и добавьте `MAX_CA_BUNDLE_HOST=/абсолютный/путь/ca-bundle.pem` в `/etc/opora-apk/production.env`. Замените функцию:
 
 ```bash
-dc() { docker compose --env-file .env.production -f compose.production.yaml -f compose.max-ca.yaml "$@"; }
+dc() { docker compose --env-file /etc/opora-apk/production.env -f compose.production.yaml -f compose.max-ca.yaml "$@"; }
 ```
 
-Не отключайте проверку TLS. Этот дополнительный Compose-файл также включите в обе команды hooks из раздела 7.
+Не отключайте проверку TLS. На действующем сервере bundle уже получен с официального CDN Госуслуг и подключён только MAX-клиентам; см. docs/DEPLOYMENT.md.
 
 ## 7. Получите HTTPS-сертификат и настройте продление
 
@@ -173,33 +196,16 @@ install -m 0600 "/etc/letsencrypt/live/$APP_DOMAIN/privkey.pem" /etc/opora-apk/t
 
 Certbot запросит почту и согласие с условиями центра сертификации. Контейнер получает копии файлов, а не символьные ссылки на недоступные пути. Самоподписанный сертификат для MAX не подходит.
 
-Следующие hooks рассчитаны на **выделенный сервер с единственным сертификатом проекта**. При продлении proxy ненадолго останавливается для standalone-проверки на порту 80. Для сервера с несколькими сайтами сначала адаптируйте hooks к конкретному сертификату. [Документация Certbot](https://eff-certbot.readthedocs.io/en/stable/using.html#renewing-certificates).
+Для последующего продления без остановки сайта создайте webroot:
 
 ```bash
-install -d /etc/letsencrypt/renewal-hooks/pre /etc/letsencrypt/renewal-hooks/deploy /etc/letsencrypt/renewal-hooks/post
-cat > /etc/letsencrypt/renewal-hooks/pre/opora-apk.sh <<'SH'
-#!/bin/sh
-set -eu
-cd /opt/opora-apk
-docker compose --env-file .env.production -f compose.production.yaml stop proxy
-SH
-cat > /etc/letsencrypt/renewal-hooks/deploy/opora-apk.sh <<'SH'
-#!/bin/sh
-set -eu
-install -m 0644 "$RENEWED_LINEAGE/fullchain.pem" /etc/opora-apk/tls/fullchain.pem
-install -m 0600 "$RENEWED_LINEAGE/privkey.pem" /etc/opora-apk/tls/privkey.pem
-SH
-cat > /etc/letsencrypt/renewal-hooks/post/opora-apk.sh <<'SH'
-#!/bin/sh
-set -eu
-cd /opt/opora-apk
-docker compose --env-file .env.production -f compose.production.yaml up -d proxy
-SH
-chmod 0700 /etc/letsencrypt/renewal-hooks/pre/opora-apk.sh /etc/letsencrypt/renewal-hooks/deploy/opora-apk.sh /etc/letsencrypt/renewal-hooks/post/opora-apk.sh
-systemctl enable --now certbot.timer
+install -d -m 0755 /var/www/certbot
 ```
 
-При использовании CA bundle добавьте `-f compose.max-ca.yaml` в обе Compose-команды hooks. При новом SSH-входе снова задайте `APP_DOMAIN`, прежде чем выполнять команды с этой переменной.
+В `production.env` укажите `ACME_WEBROOT=/var/www/certbot`. Compose подключает его
+к Nginx; HTTP-путь `/.well-known/acme-challenge/` доступен центру сертификации.
+Остальные HTTP-запросы перенаправляются на HTTPS. После запуска раздела 8
+переключите Certbot на webroot и установите hook, как указано ниже.
 
 ## 8. Запустите рабочее окружение
 
@@ -217,18 +223,31 @@ curl --fail --show-error "https://$APP_DOMAIN/api/config"
 
 Ожидаются healthy у приложения/БД, работающий proxy, успешный HTTPS и `demo: false`. Миграции применяются автоматически до запуска API. Откройте адрес с телефона через мобильный интернет и проверьте доверие к сертификату. PostgreSQL не должен иметь опубликованного внешнего порта.
 
-В период допустимой краткой недоступности проверьте продление:
+После запуска HTTPS настройте и проверьте продление без остановки proxy:
 
 ```bash
+# Этот wrapper требует настроенного CA bundle из раздела 6.
+install -m 0755 deploy/opora-compose /usr/local/sbin/opora-compose
+install -m 0755 deploy/renew-certificate.sh /etc/letsencrypt/renewal-hooks/deploy/opora-apk
+certbot reconfigure --cert-name "$APP_DOMAIN" --webroot -w /var/www/certbot --non-interactive
+systemctl enable --now certbot.timer
 certbot renew --cert-name "$APP_DOMAIN" --dry-run
-dc ps
-curl --fail --show-error "https://$APP_DOMAIN/health"
-systemctl list-timers certbot.timer
+RENEWED_LINEAGE="/etc/letsencrypt/live/$APP_DOMAIN" /etc/letsencrypt/renewal-hooks/deploy/opora-apk
 ```
 
-Dry-run проверяет получение сертификата и pre/post hooks, но по умолчанию не запускает deploy hook. Контролируйте успешность будущих продлений и срок сертификата: наличие таймера не доказывает успешное обновление.
+Reconfigure проверяет webroot через тестовый выпуск сертификата. Последняя команда
+отдельно проверяет копирование действующего сертификата и reload Nginx.
+Контролируйте срок сертификата и результат будущих продлений.
 
 ## 9. Подключите настоящий MAX
+
+**Для текущего бота хакатона:** капитан передаёт HTTPS-адрес сайта через
+[форму организаторов](https://sbor-ssylok-dlya-mini-prilojeniy.testograf.ru/).
+Нужны ФИО капитана, регистрационный email, название команды и URL сайта;
+токен не требуется. Подробности — docs/USER-ACTIONS.md.
+Ниже описан общий способ для владельцев доступа к бизнес-кабинету, а не
+подтверждённый доступ участника к выданному боту.
+
 
 В кабинете MAX: «Чат-боты» → нужный бот → настройки мини-приложения. В поле URL укажите **`https://ВАШ_ДОМЕН/`**. В переменной `MAX_APP_URL` должна остаться **ссылка `https://max.ru/ИМЯ_БОТА?startapp`**. [Инструкция MAX](https://dev.max.ru/docs/webapps/introduction).
 
@@ -239,7 +258,7 @@ dc --profile max up -d --wait
 dc exec -T app python backend/max_preflight.py
 ```
 
-Диагностика выполняет GET /me и GET /subscriptions, выводит только статусы и ничего не регистрирует. До настройки webhook ненулевой код возможен даже при правильном токене. При `network_tls_or_invalid_response` проверьте сеть и CA bundle, не отключайте TLS.
+Диагностика выполняет GET /me и GET /subscriptions, выводит статусы и публичную ссылку бота; ничего не регистрирует. Признак webhook_registered проверяйте отдельно от кода завершения. При `network_tls_or_invalid_response` проверьте сеть и CA bundle, не отключайте TLS.
 
 Следующая команда **регистрирует внешний webhook**. Запускайте только для своего бота после проверки адреса и секрета. Метод: [POST /subscriptions](https://dev.max.ru/docs-api/methods/POST/subscriptions); нужен публичный HTTPS на 443.
 
@@ -257,7 +276,7 @@ try:
     with httpx.Client(base_url=c.max_api_base,
                       headers={'Authorization': c.max_bot_token},
                       verify=ssl.create_default_context(cafile=c.max_ca_bundle or None),
-                      timeout=30, follow_redirects=False) as client:
+                      timeout=30, follow_redirects=False, trust_env=False) as client:
         response = client.post('/subscriptions', json={
             'url': c.public_origin.rstrip('/') + '/api/max/webhook',
             'update_types': ['bot_started', 'message_created'],
@@ -319,15 +338,22 @@ docker compose -f compose.yaml -f compose.test.yaml run --rm tests
 
 Если `navigator_test` уже существует, пропустите `createdb`. Тесты очищают только эту тестовую БД. TypeScript и Vite проверяются при сборке Docker.
 
-Для 14 сценариев `DATA-API.yaml` восстановите локальную Python-среду при необходимости (нужен установленный Python 3.12):
+Для 16 сценариев `DATA-API.yaml` сначала запустите отдельный стенд, чтобы
+не менять сохранённые данные обычной локальной версии:
+
+```powershell
+docker compose -p opora-apk-qa-20260927 -f compose.release-check.yaml up -d --wait
+```
+
+Затем восстановите локальную Python-среду при необходимости (нужен установленный Python 3.12):
 
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
-.\.venv\Scripts\python.exe backend/check_data_api.py
+.\.venv\Scripts\python.exe backend/check_data_api.py --base-url http://localhost:8001
 ```
 
-Проверка обращается к localhost и изменяет общие учебные анкеты/планы; для production она не предназначена.
+Проверка с указанным --base-url обращается к localhost:8001 и изменяет только учебные анкеты отдельного стенда. Для production она не предназначена.
 
 ## 12. Резервное копирование и восстановление
 
@@ -343,7 +369,7 @@ test -s "$BACKUP_FILE"
 dc exec -T db pg_restore --list < "$BACKUP_FILE" > /dev/null
 ```
 
-Копируйте дамп в защищённое хранилище вне VPS. Отдельно сохраняйте `.env.production` и исходники. Настройте ежедневный запуск, контроль ошибок и срок хранения после выбора хранилища: проект не включает эти внешние настройки автоматически. Дампы и секреты не включайте в публичный комплект.
+Копируйте дамп в защищённое хранилище вне VPS. Отдельно сохраняйте `/etc/opora-apk/production.env` и исходники. Настройте ежедневный запуск, контроль ошибок и срок хранения после выбора хранилища: проект не включает эти внешние настройки автоматически. Дампы и секреты не включайте в публичный комплект.
 
 Проверьте восстановление в **новую отдельную БД**:
 
@@ -365,7 +391,7 @@ dc --profile max stop
 dc --profile max up -d --wait
 ```
 
-Для обновления сделайте резервную копию, перенесите новые исходники с сохранением `.env.production`, затем:
+Для обновления сделайте резервную копию, перенесите новые исходники с сохранением `/etc/opora-apk/production.env`, затем:
 
 ```bash
 dc --profile max up -d --build --wait
@@ -395,3 +421,126 @@ curl --fail --show-error "https://$APP_DOMAIN/health"
 После пересборки обновите страницу браузера. В каталоге по умолчанию открываются 10 реальных объявлений из `data/official/notices.json`; API — `/api/official-announcements`. Снимок поставляется с приложением и не требует очистки или перезаписи PostgreSQL. Это проверенные финансовые факты и сроки, а не полностью опубликованные правила подбора. Учебные меры находятся на отдельной вкладке. Для изменения данных сначала сверяйте официальный источник и новую редакцию, затем пересобирайте образ; автоматического обновления нет.
 
 Для MAX нужен проверенный PEM bundle: укажите его абсолютный путь в локальном `MAX_CA_BUNDLE_HOST` и добавьте `-f compose.local-max-ca.yaml` к локальной конфигурации Compose. Подробные шаги приведены в [docs/USER-ACTIONS.md](docs/USER-ACTIONS.md). Без этого текущий контейнер не проверяет TLS-цепочку MAX. Токен повторно передавать или копировать на хостинг не нужно.
+
+
+## Обновление существующих официальных черновиков
+
+Обычный `import_official.py --apply` сохраняет ранее созданные записи без изменений.
+После проверки подготовленного набора используйте явное создание новой версии:
+
+```powershell
+docker compose exec -T app python backend/import_official.py --apply --stage-revision saratov-farm
+```
+
+На VPS команда аналогична, но начинается с `opora-compose exec -T app`.
+Повтор одного набора не создаёт дубликат. Существующие версии и пользовательские
+правки не перезаписываются. При изменённом названии / категории импорт останавливается
+для ручного сопоставления. Новая версия остаётся черновиком. Для проверки откройте
+локальный вход редактора → Реальные меры → новая версия → «Проверить правила
+на тестовой анкете». Тестовая анкета не меняет личный профиль. Публикация требует
+завершённой проверки источников; у текущего гранта есть нерешённые противоречия.
+
+## Проверка полного восстановления на настроенном VPS
+
+После копирования исходников на VPS:
+
+```bash
+cd /opt/opora-apk
+bash deploy/check-restore.sh
+```
+
+Скрипт использует существующий `opora-compose`, сохраняет закрытый дамп в
+`/etc/opora-apk/backups`, создаёт отдельную новую БД, восстанавливает её и сравнивает
+SHA-256 всех строк публичных таблиц. Рабочая БД не очищается и не переключается.
+При изменении исходной базы во время копирования проверка прекращается без
+утверждения успеха. При успешном сравнении удаляется только созданная этим запуском
+временная БД; дамп остаётся. При ошибке временная БД сохраняется для разбора.
+Скрипт не настраивает ежедневное копирование или внешнее хранилище.
+
+
+## Обновление существующего VPS проверенным артефактом
+
+Перед обновлением сверяйте файлы сервера с последним DEPLOYED-SOURCE-манифестом,
+сохраняйте пользовательские правки, выполняйте deploy/check-restore.sh и испытывайте
+upgrade на восстановленной отдельной БД. Тесты с TRUNCATE/downgrade — только в QA.
+При сравнении старого плана допускайте assessment=null: не заполняйте историю задним числом.
+
+После QA сверяйте SHA-256 source.tar.gz и image.tar с
+docs/DEPLOYMENT-20260928.json и docs/ARTIFACT-20260928-SHA256.txt. На существующем VPS
+используйте проверенный образ, сохраняя предыдущий тег и текущую БД:
+
+```bash
+docker load -i /path/to/verified/image.tar
+docker tag opora-apk-deploy:20260928 opora-apk-production-app
+opora-compose up -d --no-build --wait
+opora-compose exec -T proxy nginx -s reload
+opora-compose exec -T app alembic -c backend/alembic.ini current
+opora-compose exec -T app alembic -c backend/alembic.ini check
+```
+
+Это команды переключения после обязательных предварительных проверок, а не
+замена backup/QA. Не перезаписывайте расходящиеся с манифестом файлы сервера.
+Процедура и границы текущего отката: docs/HANDOFF-DEPLOY.md. Для подготовленного
+отката этой поставки: `bash /etc/opora-apk/deploy-20260928/rollback.sh`.
+Он сохраняет актуальную БД, предварительно делает новый dump и возвращает образ r3.
+Не выполняйте downgrade или восстановление старого dump поверх новых данных.
+После такого отката запускайте только --no-build до согласованного возврата новой версии.
+
+Основной локальный запуск закреплён за тем же проверенным образом:
+
+```powershell
+Set-Location C:\EffectiveBusiness
+docker compose -f compose.yaml -f compose.deployed-local.yaml up -d --no-build --wait
+docker compose -f compose.yaml -f compose.deployed-local.yaml stop
+```
+
+Override использует публичный CA bundle tmp/max-ca-bundle.pem. При восстановлении
+окружения получите его с уже настроенного VPS по SSH; не отключайте TLS-проверку
+и не заменяйте bundle приватным ключом. Существующий .env сохраняйте. QA этой поставки
+запускается отдельно: `docker compose -f compose.qa-deploy-20260928.yaml up -d --wait`;
+адрес http://localhost:8004. Для нового повторного изменяющего QA используйте новый
+проект/том и свободный порт, не очищайте прежний стенд.
+
+Реальные редакции импортируйте через `import_official.py --apply --stage-revision ID`.
+Публикация — только после проверки источников через draft → review → publish
+с явно подтверждёнными правами редактора. Состояние каталога и инструкция web-MAX/
+Android находятся в docs/HANDOFF-DEPLOY.md; старые проверки устройств не заменяют новые.
+
+## Проверка подбора на учебном примере
+
+Для оценки интерфейса без токена MAX и без изменения рабочей базы:
+
+```powershell
+docker compose --env-file .env.example -f compose.demo-evaluation.yaml up -d --build --wait
+```
+
+Откройте http://localhost:8000. На главной нажмите «Заполнить учебный пример КФХ», затем «3 Ваш проект» → «Сохранить и подобрать» → «Соответствует ответам анкеты». Учебный грант «Развитие фермерского хозяйства» подходит при регионе регистрации 64, статусе КФХ, цели equipment и собственных средствах от 300000 рублей. Готовый пример задаёт 450000 рублей. Это вымышленные условия для проверки программы, а не условия настоящего гранта.
+
+Окружение opora-evaluation использует отдельный том evaluation_data, порт 8000 только на 127.0.0.1 и пустые настройки MAX. Если порт занят другим локальным приложением, сначала остановите именно его; не удаляйте тома с данными. Остановка демо с сохранением ответов:
+
+```powershell
+docker compose --env-file .env.example -f compose.demo-evaluation.yaml stop
+```
+
+
+## Справочная публикация rc2
+
+Справочные карточки проходят обычные draft/review/publish и сохраняют ограничения
+исследования. Поле publication_scope=reference не разрешает общий PASS и открытый
+приём. Отдельно сверенные правила reference_rule_ids могут дать FAIL. Документы
+справочного плана требуют уточнения. Старые версии по умолчанию имеют scope full.
+
+После переноса исходников rc2 и развёртывания нового образа команда публикации:
+
+```bash
+python backend/publish_reference.py
+# Для применения укажите реальный MAX ID уже назначенного редактора:
+python backend/publish_reference.py --apply --actor-max-id <MAX_ID>
+```
+
+В контейнере рабочего сервера используйте `opora-compose exec -T app` перед python.
+Без --apply команда не меняет данные. Повторный запуск идемпотентен.
+Существующие полные публикации не заменяются справочными. Токены не передаются
+в аргументах. Для работы из исходников нужен настроенный DATABASE_URL и MAX_ADMIN_IDS.
+Текущий сервер запускает готовый образ; его старый checkout не является исходниками rc2.
+Сначала разверните новый source.zip перед следующей сборкой на сервере.

@@ -28,27 +28,40 @@ def validate_launch(raw: str, bot_token: str, now: int | None = None) -> dict:
     user = json.loads(params.get("user", "{}"))
     if not isinstance(user, dict) or type(user.get("id")) is not int or user["id"] <= 0:
         raise ValueError("Неверный пользователь")
-    return {"id": user["id"], "name": str(user.get("first_name", "Пользователь"))[:100], "hash": original}
+    return {
+        "id": user["id"],
+        "name": str(user.get("first_name", "Пользователь"))[:100],
+        "hash": original,
+    }
 
 
 class MaxClient:
     def __init__(self, config):
-        if config.max_api_base.rstrip('/') != 'https://platform-api2.max.ru':
-            raise ValueError('Передача токена разрешена только официальному API MAX')
+        if config.max_api_base.rstrip("/") != "https://platform-api2.max.ru":
+            raise ValueError("Передача токена разрешена только официальному API MAX")
         self.config = config
 
     async def send(self, chat_id: int, text: str):
         verify = ssl.create_default_context(cafile=self.config.max_ca_bundle or None)
-        async with httpx.AsyncClient(base_url=self.config.max_api_base,
-                                     headers={"Authorization": self.config.max_bot_token},
-                                     timeout=15, verify=verify, follow_redirects=False, trust_env=False) as client:
-            response = await client.post("/messages", params={"chat_id": chat_id}, json={"text": text})
+        async with httpx.AsyncClient(
+            base_url=self.config.max_api_base,
+            headers={"Authorization": self.config.max_bot_token},
+            timeout=15,
+            verify=verify,
+            follow_redirects=False,
+            trust_env=False,
+        ) as client:
+            response = await client.post(
+                "/messages", params={"chat_id": chat_id}, json={"text": text}
+            )
             response.raise_for_status()
 
 
 def prepare_event(payload: dict, app_url: str) -> tuple[str, dict]:
     kind = payload.get("update_type")
-    canonical = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    canonical = json.dumps(
+        payload, sort_keys=True, ensure_ascii=False, separators=(",", ":")
+    )
     key = hashlib.sha256(canonical.encode()).hexdigest()
     chat_id = payload.get("chat_id")
     if kind == "message_created":
@@ -64,5 +77,8 @@ def prepare_event(payload: dict, app_url: str) -> tuple[str, dict]:
         return key, {}
     if type(chat_id) is not int or not app_url:
         return key, {}
-    return key, {"chat_id": chat_id,
-                 "text": "Опора АПК — подбор поддержки и план подготовки. Откройте мини-приложение: " + app_url}
+    return key, {
+        "chat_id": chat_id,
+        "text": "Опора АПК — подбор поддержки и план подготовки. Откройте мини-приложение: "
+        + app_url,
+    }

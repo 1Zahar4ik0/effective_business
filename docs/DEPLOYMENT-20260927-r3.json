@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-27",
+  "source_archive": "opora-apk-source-20260927-r3.tar.gz",
+  "source_sha256": "8e6904ba2a95674a376f1ebdc2e896f1f37e767c85cd805470d9b3b8435fb092",
+  "files": 74,
+  "status": "deployed_and_checked",
+  "tests_passed": 63,
+  "data_api_steps_passed": 16,
+  "local_cached_build_and_start_seconds": 32.71,
+  "max_user_report": [
+    "web",
+    "Android"
+  ],
+  "max_user_report_scope": "opening, profile persists after reopening and across devices",
+  "real_conditions_published": 0,
+  "origin": "https://opora-apk.159-194-249-97.sslip.io",
+  "vps_cached_build_and_start_seconds": 36,
+  "production_real_measures": 10,
+  "production_real_draft_versions": 12,
+  "production_synthetic_measures": 0,
+  "profile_and_plan_sha256_unchanged": "28875648c3279f95dfbc83825c3322298a1aaae118b72546f0d8c8372dbab70f",
+  "backup_restored_all_public_tables_sha256": "2bc5514ba9deeffc6651c9efe4fd660a07bb4cb1aeec94ed494b3401b6dc51d6",
+  "backup": "/etc/opora-apk/backups/verified-20260927171519.dump",
+  "migration_head": "20260918_one_published",
+  "source_files_verified": true,
+  "secret_scan": "74 files: no exact matches with configured local MAX secrets; .env excluded",
+  "https_checks": "health/config/notices/catalog/root 200; editor without session 401; updated JS verified",
+  "max_retested_after_r3": false
+}

@@ -1,4 +1,3 @@
-# Только после настройки MAX. Запуск: docker compose -f compose.yaml -f compose.max.yaml up -d
 services:
   bot-worker:
     image: opora-apk-app

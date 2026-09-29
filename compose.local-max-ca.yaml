@@ -1,5 +1,3 @@
-# Local computer only. The token stays in the local .env / container.
-# This file does not publish the app or install a system-wide CA.
 services:
   app:
     environment:

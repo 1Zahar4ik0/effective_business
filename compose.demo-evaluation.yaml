@@ -1,0 +1,35 @@
+name: opora-evaluation
+services:
+  db:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: navigator_demo
+      POSTGRES_USER: navigator
+      POSTGRES_PASSWORD: local-demo-only
+    volumes: ["evaluation_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U navigator -d navigator_demo"]
+      interval: 2s
+      retries: 30
+  app:
+    build: .
+    image: opora-apk-evaluation:20260929
+    environment:
+      APP_ENV: demo
+      SEED_DEMO: "true"
+      DATABASE_URL: postgresql+psycopg://navigator:local-demo-only@db:5432/navigator_demo
+      PUBLIC_ORIGIN: http://localhost:8000
+      STATIC_DIR: /app/frontend/dist
+      MAX_BOT_TOKEN: ""
+      MAX_WEBHOOK_SECRET: ""
+      MAX_ADMIN_IDS: ""
+      MAX_APP_URL: ""
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 3s
+      retries: 30
+volumes:
+  evaluation_data:

@@ -1,0 +1,23 @@
+{
+  "url": "https://promote.budget.gov.ru/m-data/api/v1/selection/public-view/selection/e2c7b4b3-b123-41b0-b93e-f07af90d15c8/ff60678b-484f-4b55-96dd-861eef89af9b/20/d37d8fd5-3f27-4e3b-a2ec-6ae5464c3712",
+  "retrieved_at": "2026-09-29T14:01:36.436675+00:00",
+  "sha256": "66c2526ab402bf697b8bc161f6b15110a4306bd7d9095407a4723599e8f31050",
+  "pages": 21,
+  "visually_checked_pages": [
+    3,
+    5,
+    20
+  ],
+  "text_checked_pages": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    8,
+    9,
+    20
+  ],
+  "scope": "Условия документов, сроки и суммы; не полная проверка нормативной цепочки"
+}

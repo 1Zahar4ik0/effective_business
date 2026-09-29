@@ -11,7 +11,9 @@ ROOT = Path(__file__).resolve().parents[2]
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
     app_env: Literal["demo", "test", "production"] = "production"
-    database_url: str = "postgresql+psycopg://navigator:local-demo-only@localhost:55432/navigator"
+    database_url: str = (
+        "postgresql+psycopg://navigator:local-demo-only@localhost:55432/navigator"
+    )
     seed_demo: bool = False
     max_bot_token: str = ""
     max_webhook_secret: str = ""

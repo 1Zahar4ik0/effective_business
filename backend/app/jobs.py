@@ -1,4 +1,3 @@
-"""Надёжная очередь ответов бота. Не рассылает незапрошенные уведомления."""
 import asyncio
 from datetime import timedelta
 from sqlalchemy import select
@@ -13,8 +12,13 @@ async def deliver_once():
         return 0
     delivered = 0
     with SessionLocal() as db:
-        events = db.scalars(select(BotEvent).where(BotEvent.state == "pending", BotEvent.next_attempt <= utcnow())
-                            .order_by(BotEvent.next_attempt).limit(10).with_for_update(skip_locked=True)).all()
+        events = db.scalars(
+            select(BotEvent)
+            .where(BotEvent.state == "pending", BotEvent.next_attempt <= utcnow())
+            .order_by(BotEvent.next_attempt)
+            .limit(10)
+            .with_for_update(skip_locked=True)
+        ).all()
         for event in events:
             event.attempts += 1
             try:
@@ -22,9 +26,11 @@ async def deliver_once():
                 event.state = "sent"
                 delivered += 1
             except Exception:
-                # Не пишем URL, заголовки или тело исключения: они могут содержать чувствительные сведения.
+
                 event.state = "failed" if event.attempts >= 5 else "pending"
-                event.next_attempt = utcnow() + timedelta(seconds=min(600, 15 * 2 ** event.attempts))
+                event.next_attempt = utcnow() + timedelta(
+                    seconds=min(600, 15 * 2**event.attempts)
+                )
         db.commit()
     return delivered
 

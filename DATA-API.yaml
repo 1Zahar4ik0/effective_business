@@ -131,7 +131,8 @@
         "/synthetic": true
       },
       "capture": {
-        "round_id": "/rounds/0/id"
+        "round_id": "/rounds/0/id",
+        "preview_data": "/data"
       },
       "id": "step-06",
       "role": "farmer",
@@ -160,7 +161,10 @@
       "capture": {
         "plan_id": "/id",
         "item_id": "/items/0/id",
-        "revision": "/revision"
+        "revision": "/revision",
+        "saved_version": "/assessment/version_id",
+        "saved_round": "/assessment/round/id",
+        "saved_assessment": "/assessment"
       },
       "id": "step-07",
       "role": "farmer",
@@ -176,8 +180,14 @@
           "id",
           "items",
           "measure",
-          "revision"
+          "revision",
+          "assessment",
+          "profile_changed"
         ]
+      },
+      "equals": {
+        "/assessment/status": "PASS",
+        "/profile_changed": false
       }
     },
     {
@@ -318,6 +328,33 @@
       }
     },
     {
+      "id": "editor-preview",
+      "method": "POST",
+      "path": "/api/admin/preview",
+      "role": "editor",
+      "body": {
+        "data": "{preview_data}",
+        "profile": {}
+      },
+      "expect": 200,
+      "equals": {
+        "/status": "UNKNOWN"
+      },
+      "query": {},
+      "headers": {
+        "X-App-Request": "1",
+        "X-CSRF-Token": "{csrf}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "status",
+          "checks"
+        ]
+      }
+    },
+    {
       "method": "POST",
       "path": "/api/auth/logout",
       "expect": 200,
@@ -357,14 +394,99 @@
           "items"
         ]
       }
+    },
+    {
+      "id": "step-17",
+      "method": "GET",
+      "path": "/api/profile/questions",
+      "expect": 200,
+      "role": "guest",
+      "query": {},
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "array",
+        "required": []
+      }
+    },
+    {
+      "id": "reenter-for-snapshot",
+      "method": "POST",
+      "path": "/api/auth/demo",
+      "expect": 200,
+      "role": "guest",
+      "body": {
+        "persona": "farmer"
+      },
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "capture": {
+        "csrf": "/csrf"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "csrf",
+          "user"
+        ]
+      }
+    },
+    {
+      "id": "plan-snapshot-after-profile-change",
+      "method": "PUT",
+      "path": "/api/profile",
+      "expect": 200,
+      "role": "farmer",
+      "body": {
+        "expense_year": 2025
+      },
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "object",
+        "required": [
+          "expense_year"
+        ]
+      }
+    },
+    {
+      "id": "saved-snapshot-retained",
+      "method": "GET",
+      "path": "/api/preparation-plans",
+      "expect": 200,
+      "role": "farmer",
+      "headers": {
+        "X-App-Request": "1"
+      },
+      "equals": {
+        "/profile_changed": true,
+        "/assessment": "{saved_assessment}",
+        "/assessment/version_id": "{saved_version}",
+        "/assessment/round/id": "{saved_round}"
+      },
+      "response": {
+        "content_type": "application/json",
+        "type": "array",
+        "required": []
+      },
+      "select": {
+        "field": "id",
+        "value": "{plan_id}"
+      }
     }
   ],
   "schema_version": "1.0",
   "solution": "Опора АПК",
   "environment": "local-demo",
   "production": {
-    "base_url": null,
-    "status": "blocked: публичный HTTPS и MAX не настроены"
+    "base_url": "https://opora-apk.159-194-249-97.sslip.io",
+    "status": "Размещена r3; пользователь подтвердил веб-MAX/Android. Новые правила и планы проверяются только на отдельном QA; этот контракт ещё не размещён."
   },
   "authentication": {
     "local": "POST /api/auth/demo; persona farmer, second, editor. Без пароля, только локальный demo.",

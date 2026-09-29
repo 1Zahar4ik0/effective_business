@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://minagro.saratov.gov.ru/subsidii/",
+    "status": 200,
+    "bytes": 1051376,
+    "sha256": "2f3fffda7bf3780f82c7125c4b7625c9337609e4affbf8b6ad256855be6db3ff",
+    "file": "subsidii.html"
+  },
+  {
+    "url": "https://promote.budget.gov.ru/",
+    "error": "URLError",
+    "detail": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+  }
+]

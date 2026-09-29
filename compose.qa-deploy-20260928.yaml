@@ -1,0 +1,49 @@
+name: opora-deploy-20260928
+services:
+  db:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: navigator
+      POSTGRES_USER: navigator
+      POSTGRES_PASSWORD: synthetic-qa-only
+    volumes:
+      - qa_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U navigator -d navigator"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  testdb:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_DB: navigator_test
+      POSTGRES_USER: navigator
+      POSTGRES_PASSWORD: synthetic-test-only
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U navigator -d navigator_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  app:
+    image: opora-apk-deploy:20260928
+    environment:
+      DATABASE_URL: postgresql+psycopg://navigator:synthetic-qa-only@db:5432/navigator
+      APP_ENV: demo
+      SEED_DEMO: "true"
+      PUBLIC_ORIGIN: http://localhost:8004
+      STATIC_DIR: /app/frontend/dist
+    ports:
+      - "127.0.0.1:8004:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  qa_data:
+

@@ -1,0 +1,262 @@
+[
+  {
+    "path": "frontend/dist/index.html",
+    "bytes": 506
+  },
+  {
+    "path": "frontend/dist/assets/index-buqqXb0Q.css",
+    "bytes": 18736
+  },
+  {
+    "path": "frontend/dist/assets/index-YYOZFh4d.js",
+    "bytes": 275778
+  },
+  {
+    "path": "frontend/tsconfig.tsbuildinfo",
+    "bytes": 148
+  },
+  {
+    "path": "tmp/submission-20260929/image.tar",
+    "bytes": 83894784
+  },
+  {
+    "path": "tmp/submission-20260929/public/candidate.pptx",
+    "bytes": 113608
+  },
+  {
+    "path": "tmp/submission-20260929/public/candidate.pptx.inspect.ndjson",
+    "bytes": 21083
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-01.png",
+    "bytes": 36346
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-02.png",
+    "bytes": 52891
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-03.png",
+    "bytes": 50349
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-04.png",
+    "bytes": 181310
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-05.png",
+    "bytes": 50546
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-06.png",
+    "bytes": 61046
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-07.png",
+    "bytes": 53929
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-08.png",
+    "bytes": 53772
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-09.png",
+    "bytes": 55773
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-10.png",
+    "bytes": 49165
+  },
+  {
+    "path": "tmp/submission-20260929/public/slide-11.png",
+    "bytes": 50425
+  },
+  {
+    "path": "tmp/submission-20260929/public/validation.json",
+    "bytes": 3797
+  },
+  {
+    "path": "tmp/submission-20260929/jury/candidate.pptx",
+    "bytes": 119720
+  },
+  {
+    "path": "tmp/submission-20260929/jury/candidate.pptx.inspect.ndjson",
+    "bytes": 23404
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-01.png",
+    "bytes": 57768
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-02.png",
+    "bytes": 36346
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-03.png",
+    "bytes": 52891
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-04.png",
+    "bytes": 50349
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-05.png",
+    "bytes": 181310
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-06.png",
+    "bytes": 50546
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-07.png",
+    "bytes": 61046
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-08.png",
+    "bytes": 53929
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-09.png",
+    "bytes": 53772
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-10.png",
+    "bytes": 55773
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-11.png",
+    "bytes": 49165
+  },
+  {
+    "path": "tmp/submission-20260929/jury/slide-12.png",
+    "bytes": 50425
+  },
+  {
+    "path": "tmp/submission-20260929/jury/validation.json",
+    "bytes": 3797
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/candidate.pptx",
+    "bytes": 116712
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/candidate.pptx.inspect.ndjson",
+    "bytes": 23406
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-01.png",
+    "bytes": 57768
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-02.png",
+    "bytes": 36346
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-03.png",
+    "bytes": 52891
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-04.png",
+    "bytes": 50349
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-05.png",
+    "bytes": 218378
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-06.png",
+    "bytes": 50546
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-07.png",
+    "bytes": 61046
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-08.png",
+    "bytes": 53929
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-09.png",
+    "bytes": 53772
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-10.png",
+    "bytes": 55773
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-11.png",
+    "bytes": 49165
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/slide-12.png",
+    "bytes": 50425
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/jury/validation.json",
+    "bytes": 3797
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/candidate.pptx",
+    "bytes": 113596
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/candidate.pptx.inspect.ndjson",
+    "bytes": 21083
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-01.png",
+    "bytes": 36346
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-02.png",
+    "bytes": 52891
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-03.png",
+    "bytes": 50349
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-04.png",
+    "bytes": 218378
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-05.png",
+    "bytes": 50546
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-06.png",
+    "bytes": 61046
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-07.png",
+    "bytes": 53929
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-08.png",
+    "bytes": 53772
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-09.png",
+    "bytes": 55773
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-10.png",
+    "bytes": 49165
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/slide-11.png",
+    "bytes": 50425
+  },
+  {
+    "path": "tmp/submission-20260929/slides-v3/public/validation.json",
+    "bytes": 3797
+  },
+  {
+    "path": "tmp/pdfs/sources-edit/jury.png",
+    "bytes": 48041
+  },
+  {
+    "path": "tmp/pdfs/sources-edit/public.png",
+    "bytes": 48041
+  }
+]

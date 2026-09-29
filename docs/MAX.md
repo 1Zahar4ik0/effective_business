@@ -1,5 +1,39 @@
 # Подключение MAX
 
+## Размещение и MAX — 27.09.2026
+
+Пользователь разрешил размещение и перенос токена на собственный VPS. Это заменяет
+прежнее ограничение «хранить только локально». Токен перенесён по SSH без вывода,
+сохранён вне проекта в /etc/opora-apk/production.env (0600). API-клиент обращается
+только к https://platform-api2.max.ru, без redirects и прокси окружения.
+
+- HTTPS: https://opora-apk.159-194-249-97.sslip.io/ . Бесплатный DNS sslip.io
+  проверен; сертификат Let's Encrypt действует до 26.12.2026, включён certbot.timer.
+- VPS Exciting Veronika: Ubuntu 24.04.5, 2 CPU, 3914 MiB RAM, 38 GB root.
+  Docker Engine 29.8.1 / Compose 5.5.1 установлены из официального репозитория.
+- Проект /opt/opora-apk; команда opora-compose; production DB в отдельном томе.
+  Наружу опубликованы 80/443; SSH 22; PostgreSQL 5432 наружу не опубликован.
+- Официальный CA получен с https://gu-st.ru/content/Other/doc/russian_trusted_root_ca.cer
+  (также сверена PEM-копия официального CDN). SHA-256 отпечаток сертификата:
+  D2:6D:2D:02:31:B7:C3:9F:92:CC:73:85:12:BA:54:10:35:19:E4:40:5D:68:B5:BD:70:3E:97:88:CA:8E:CF:31.
+  Дополнен отдельный MAX bundle /etc/opora-apk/max-ca-bundle.pem; системное доверие
+  Windows/сервера не менялось. Проверка TLS включена.
+- GET /me подтвердил токен и бота https://max.ru/t761_hakaton_max_bot .
+  GET /subscriptions подтвердил наш webhook после POST /subscriptions (success=true).
+  Типы bot_started и message_created, секрет заголовка настроен; worker запущен.
+- MAX_APP_URL=https://max.ru/t761_hakaton_max_bot?startapp . Привязка URL сайта
+  в кабинете MAX и фактический пользовательский вход ещё не подтверждены.
+  MAX_ADMIN_IDS пуст; проверка мобильного/веб-MAX не выполнена.
+- Production содержит 10 реальных мер и 10 версий draft, 0 synthetic и 0 published.
+  Доступны 10 официальных объявлений; содержательная проверка их источников остаётся
+  от 20.09, не переименована в проверку 27.09. Подбор/планы ждут полной проверки условий.
+- Создана закрытая начальная резервная копия /etc/opora-apk/backups/navigator-initial.dump.
+  Регулярный внешний backup и полное восстановление ещё не проверены.
+
+Предыдущие разделы ниже описывают состояние до размещения; инструкция обслуживания
+обновлена в README. Для действий владельца используйте docs/USER-ACTIONS.md.
+
+
 Проверено по официальной документации 18.09.2026:
 
 - [MAX Bridge](https://dev.max.ru/docs/webapps/bridge): `https://st.max.ru/js/max-web-app.js`, `window.WebApp.initData`.

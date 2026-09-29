@@ -1,0 +1,158 @@
+[
+  {
+    "file": "crop-0153-00.pdf",
+    "archive": "crop-0153.zip",
+    "member": "Отбор по страх. раст-во (0153).pdf",
+    "sha256": "9f108f93e3a62c62017fe68934bead4a2a4a94e26d89a32f3e8c1ea7bdf4224c"
+  },
+  {
+    "file": "crop-0153-01.pdf",
+    "archive": "crop-0153.zip",
+    "member": "Постановление Прав.Сара.обл от 11.04.2016 г N 157 П (с измен. от 04.02.26).pdf",
+    "sha256": "24ab9168d025069f626f1e0eef8f2c8d38273420d171c14c7c58c19e87bb7bcf"
+  },
+  {
+    "file": "crop-0153-02.pdf",
+    "archive": "crop-0153.zip",
+    "member": "Приказ министерства сельского хозяйства Саратовской области от 27 апреля 2016 г .pdf",
+    "sha256": "b1becb33dac497a4e4f599faa63d3f3d3fbed6ace03b36fc4f6089c053bda8f7"
+  },
+  {
+    "file": "source-2-00.pdf",
+    "archive": "source-2.zip",
+    "member": "62-пр от 05.03.2024 с изм. от 04 09 2026.pdf",
+    "sha256": "770df3cb6c79a3d1206cef7ebad5b424808dd1fff25fef855eaa8ae91ef464c0"
+  },
+  {
+    "file": "source-2-01.pdf",
+    "archive": "source-2.zip",
+    "member": "обьявление об отборе.pdf",
+    "sha256": "e1c2b89c22ceb79bff7b26b5420a3b1d65806d20526c31f8dd3fb8ccfcb5da2e"
+  },
+  {
+    "file": "source-2-02.pdf",
+    "archive": "source-2.zip",
+    "member": "Постановление Правительства СО от 03.09.2026 № 651-П (141-П).pdf",
+    "sha256": "a7918d970b3e3d3136a19b6df0a8ab48492b54be987666bfeaee9a8f78e6c4da"
+  },
+  {
+    "file": "source-3-00.pdf",
+    "archive": "source-3.zip",
+    "member": "Отбор по страх раст-во (0142).pdf",
+    "sha256": "8ef01a5ab863d9c56c33379cebe8dbbcba0de29a550bf75900a92ba181264d32"
+  },
+  {
+    "file": "source-3-01.pdf",
+    "archive": "source-3.zip",
+    "member": "Отбор по страх. живот-ва (0143).pdf",
+    "sha256": "6706753ce0b73b5109af293d1f7248e9b195e63ad573fa94088a683b4a09bede"
+  },
+  {
+    "file": "source-3-02.pdf",
+    "archive": "source-3.zip",
+    "member": "Постановление Прав.Сара.обл от 11.04.2016 г N 157 П (с измен. от 04.02.26).pdf",
+    "sha256": "24ab9168d025069f626f1e0eef8f2c8d38273420d171c14c7c58c19e87bb7bcf"
+  },
+  {
+    "file": "source-3-03.pdf",
+    "archive": "source-3.zip",
+    "member": "Приказ министерства сельского хозяйства Саратовской области от 27 апреля 2016 г .pdf",
+    "sha256": "b1becb33dac497a4e4f599faa63d3f3d3fbed6ace03b36fc4f6089c053bda8f7"
+  },
+  {
+    "file": "source-6-01.pdf",
+    "archive": "source-6.zip",
+    "member": "агромотиватор 1/623-П Агромотиватор.pdf",
+    "sha256": "a03d505caaba56567295ac2a6ed9ff9e5587bb6b4a80a608087ab686368e8a5e"
+  },
+  {
+    "file": "source-6-02.pdf",
+    "archive": "source-6.zip",
+    "member": "агромотиватор 1/Объявление об отборе_Грант Агромотиватор.pdf",
+    "sha256": "249cfa06bac7465c1c592037ac53d266588ca0f191ade98e48e8c51668759ff0"
+  },
+  {
+    "file": "source-6-03.pdf",
+    "archive": "source-6.zip",
+    "member": "агромотиватор 1/Постановление Агромотиватор подписанное.pdf",
+    "sha256": "d8e7db08066f937a94153ed68f10c511e5530cadc116eb3e9ff9d85c1422f486"
+  },
+  {
+    "file": "source-6-04.pdf",
+    "archive": "source-6.zip",
+    "member": "агромотиватор 1/Постановление Правительства Саратовской области от 7 октября 2025 г N 770 П Об у.pdf",
+    "sha256": "d68200730db6eaaa678e32ac7f34c227bea8ddb386ac30a33eabe9deed55309c"
+  },
+  {
+    "file": "source-6-05.pdf",
+    "archive": "source-6.zip",
+    "member": "агромотиватор 1/Приказ МСХ РФ №185 Перечень затрат .pdf",
+    "sha256": "1222b4aabe10144cf701ef5c327d5caaa2c549e45d355db12f6564a9974763d3"
+  },
+  {
+    "file": "source-6-06.pdf",
+    "archive": "source-6.zip",
+    "member": "агромотиватор 1/Приказ МСХ СО 112-пр СХ территории и агломерации Агромотиватор-сжатый.pdf",
+    "sha256": "0f58d5e65d75463120055bd80dc91a51177fd14a91662d323a0c3df040ed5270"
+  },
+  {
+    "file": "source-6-07.pdf",
+    "archive": "source-6.zip",
+    "member": "агромотиватор 1/Приказ МСХ СО 115-пр бизнес- план Агромотиватор.pdf",
+    "sha256": "db621c0771ab728a78b45a975b66aaff87c2f9906f27ed2e9e0e5865c74bdf1d"
+  },
+  {
+    "file": "source-7-01.pdf",
+    "archive": "source-7.zip",
+    "member": "агропрогресс 1/622-П Агропрогресс.pdf",
+    "sha256": "d7701f7df88b4ee9d0f14aaca2680f429059e1f86deab1ffd28d7ec05cf8a1ab"
+  },
+  {
+    "file": "source-7-02.pdf",
+    "archive": "source-7.zip",
+    "member": "агропрогресс 1/Объявление об отборе_Грант Агропрогресс.pdf",
+    "sha256": "cfa209a3083f30140af8cf56b3ba28150723fc5151bda59e1abc88a8ec3ca4ad"
+  },
+  {
+    "file": "source-7-03.pdf",
+    "archive": "source-7.zip",
+    "member": "агропрогресс 1/Постановление Правительства Саратовской области от 30 августа 2021 г N 715 П Об .pdf",
+    "sha256": "d733e6fa4af236b425d6268cb7712b2317491d8610d4e9c4aeec24670dd3e996"
+  },
+  {
+    "file": "source-7-04.pdf",
+    "archive": "source-7.zip",
+    "member": "агропрогресс 1/Приказ МинСХ СО 104-пр сх территории и агломерации Агропрогресс -сжатый.pdf",
+    "sha256": "50e6400c64e727a56016a41992fbae9e9b89810363b65a8bcdbef995cce178ae"
+  },
+  {
+    "file": "source-7-05.pdf",
+    "archive": "source-7.zip",
+    "member": "агропрогресс 1/Приказ МСХ РФ №185 Перечень затрат .pdf",
+    "sha256": "1222b4aabe10144cf701ef5c327d5caaa2c549e45d355db12f6564a9974763d3"
+  },
+  {
+    "file": "source-7-06.pdf",
+    "archive": "source-7.zip",
+    "member": "агропрогресс 1/Приказ мсх СО 114-пр бизнес-план Агропрогресс.pdf",
+    "sha256": "edcb9b5de975380ab20c0c0b00b97e077a2d6d95617640b3b6e4cc114f3a25f4"
+  },
+  {
+    "file": "source-9-00.pdf",
+    "archive": "source-9.zip",
+    "member": "Подписанное объявление об отборе.pdf",
+    "sha256": "7f75902134036a35687279947c847a5db6fc932a3bb4f97607e595c7df73fb26"
+  },
+  {
+    "file": "source-9-01.pdf",
+    "archive": "source-9.zip",
+    "member": "Постановление Правительства Саратовской области от 29 февраля 2024 г N 1....pdf",
+    "sha256": "54218109b8730ad07b645cdcafc1b112bdcd825f8d465aa094e980a134d0841a"
+  },
+  {
+    "file": "source-9-02.pdf",
+    "archive": "source-9.zip",
+    "member": "Приказ министерства сельского хозяйства Саратовской области от 5 марта 2....pdf",
+    "sha256": "b114fded19c6016a3a68d8203a88131903fefc0b40abf4c8991275cf1446d425"
+  }
+]

@@ -1,0 +1,7 @@
+services:
+  app:
+    image: opora-apk-design:20260929
+    environment:
+      MAX_CA_BUNDLE: /run/max-trust/ca-bundle.pem
+    volumes:
+      - ./tmp/max-ca-bundle.pem:/run/max-trust/ca-bundle.pem:ro

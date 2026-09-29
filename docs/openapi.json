@@ -37,19 +37,8 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Нет действующей сессии"
-          },
-          "403": {
-            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
           }
-        },
-        "security": [
-          {
-            "sessionCookie": []
-          }
-        ]
+        }
       }
     },
     "/api/config": {
@@ -328,6 +317,39 @@
               "const": "1"
             },
             "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
+          }
+        ]
+      }
+    },
+    "/api/profile/questions": {
+      "get": {
+        "summary": "Profile Questions",
+        "operationId": "profile_questions_api_profile_questions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProfileQuestion"
+                  },
+                  "type": "array",
+                  "title": "Response Profile Questions Api Profile Questions Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
           }
         ]
       }
@@ -637,6 +659,68 @@
         "security": [
           {
             "sessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/admin/preview": {
+      "post": {
+        "summary": "Preview Rules",
+        "operationId": "preview_rules_api_admin_preview_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreviewInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет действующей сессии"
+          },
+          "403": {
+            "description": "Недостаточно прав или запрос не прошёл проверку защиты"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-App-Request",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "const": "1"
+            },
+            "description": "Защита запросов приложения. Origin должен соответствовать PUBLIC_ORIGIN."
           }
         ]
       }
@@ -1297,6 +1381,49 @@
               }
             ],
             "title": "Special Category"
+          },
+          "expense_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2100.0,
+                "minimum": 2000.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expense Year"
+          },
+          "family_kfh_members": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Family Kfh Members"
+          },
+          "requested_grant": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000000000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,13}|(?=[\\d.]{1,16}0*$)\\d{0,13}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requested Grant"
           }
         },
         "additionalProperties": false,
@@ -1469,6 +1596,44 @@
               }
             ],
             "title": "Special Category"
+          },
+          "expense_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2100.0,
+                "minimum": 2000.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expense Year"
+          },
+          "family_kfh_members": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Family Kfh Members"
+          },
+          "requested_grant": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,13}|(?=[\\d.]{1,16}0*$)\\d{0,13}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requested Grant"
           }
         },
         "additionalProperties": false,
@@ -1566,7 +1731,7 @@
         "type": "object",
         "title": "DemoInput"
       },
-      "Document": {
+      "Document-Input": {
         "properties": {
           "id": {
             "type": "string",
@@ -1583,6 +1748,16 @@
             "type": "string",
             "maxLength": 700,
             "title": "Hint"
+          },
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rule-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -1593,6 +1768,102 @@
           "hint"
         ],
         "title": "Document"
+      },
+      "Document-Output": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "hint": {
+            "type": "string",
+            "maxLength": 700,
+            "title": "Hint"
+          },
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rule-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "hint"
+        ],
+        "title": "Document"
+      },
+      "DocumentAssessment": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "hint": {
+            "type": "string",
+            "maxLength": 700,
+            "title": "Hint"
+          },
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rule-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "applicability": {
+            "type": "string",
+            "enum": [
+              "required",
+              "not_applicable",
+              "unknown"
+            ],
+            "title": "Applicability"
+          },
+          "check": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CheckView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "hint",
+          "applicability"
+        ],
+        "title": "DocumentAssessment"
       },
       "DraftInput": {
         "properties": {
@@ -1654,6 +1925,13 @@
             },
             "type": "array",
             "title": "Checks"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentAssessment"
+            },
+            "type": "array",
+            "title": "Documents"
           }
         },
         "additionalProperties": false,
@@ -1807,6 +2085,102 @@
         ],
         "title": "NewMeasure"
       },
+      "PlanAssessment": {
+        "properties": {
+          "engine_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engine Version"
+          },
+          "version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version Id"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          },
+          "legal_edition": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Edition"
+          },
+          "round": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RoundView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Assessed At"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/BusinessProfile-Output"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "UNKNOWN"
+            ],
+            "title": "Status"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/CheckView"
+            },
+            "type": "array",
+            "title": "Checks"
+          },
+          "availability": {
+            "type": "string",
+            "title": "Availability"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "assessed_at",
+          "profile",
+          "status",
+          "checks",
+          "availability"
+        ],
+        "title": "PlanAssessment"
+      },
       "PlanDocument": {
         "properties": {
           "id": {
@@ -1825,9 +2199,45 @@
             "maxLength": 700,
             "title": "Hint"
           },
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rule-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "done": {
             "type": "boolean",
             "title": "Done"
+          },
+          "applicability": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "required",
+                  "not_applicable",
+                  "unknown"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applicability"
+          },
+          "check": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CheckView"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -1898,6 +2308,21 @@
               }
             ],
             "title": "Current Version Id"
+          },
+          "assessment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanAssessment"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "profile_changed": {
+            "type": "boolean",
+            "title": "Profile Changed",
+            "default": false
           }
         },
         "additionalProperties": false,
@@ -1913,6 +2338,102 @@
           "current_version_id"
         ],
         "title": "PlanView"
+      },
+      "PreviewInput": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/VersionData-Input"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/BusinessProfile-Input"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "data",
+          "profile"
+        ],
+        "title": "PreviewInput"
+      },
+      "PreviewView": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "UNKNOWN"
+            ],
+            "title": "Status"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/CheckView"
+            },
+            "type": "array",
+            "title": "Checks"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "checks"
+        ],
+        "title": "PreviewView"
+      },
+      "ProfileQuestion": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "expense_year",
+              "family_kfh_members",
+              "requested_grant"
+            ],
+            "title": "Field"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "hint": {
+            "type": "string",
+            "title": "Hint"
+          },
+          "minimum": {
+            "type": "integer",
+            "title": "Minimum"
+          },
+          "maximum": {
+            "type": "integer",
+            "title": "Maximum"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Source Refs"
+          },
+          "step": {
+            "type": "string",
+            "title": "Step",
+            "default": "1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field",
+          "label",
+          "hint",
+          "minimum",
+          "maximum",
+          "source_refs"
+        ],
+        "title": "ProfileQuestion"
       },
       "RevisionInput": {
         "properties": {
@@ -1962,6 +2483,28 @@
             ],
             "title": "State",
             "default": "announced"
+          },
+          "acceptance_status": {
+            "type": "string",
+            "enum": [
+              "unconfirmed",
+              "confirmed_open",
+              "closed"
+            ],
+            "title": "Acceptance Status",
+            "default": "unconfirmed"
+          },
+          "acceptance_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptance Checked At"
           },
           "application_url": {
             "type": "string",
@@ -2021,6 +2564,28 @@
             ],
             "title": "State",
             "default": "announced"
+          },
+          "acceptance_status": {
+            "type": "string",
+            "enum": [
+              "unconfirmed",
+              "confirmed_open",
+              "closed"
+            ],
+            "title": "Acceptance Status",
+            "default": "unconfirmed"
+          },
+          "acceptance_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptance Checked At"
           },
           "application_url": {
             "type": "string",
@@ -2353,6 +2918,25 @@
       },
       "VersionData-Input": {
         "properties": {
+          "publication_scope": {
+            "type": "string",
+            "enum": [
+              "full",
+              "reference"
+            ],
+            "title": "Publication Scope",
+            "description": "full: проверка допуска; reference: справочные сведения без решения о соответствии",
+            "default": "full"
+          },
+          "reference_rule_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Reference Rule Ids",
+            "description": "Правила справочной карточки, отдельно сверенные редактором"
+          },
           "summary": {
             "type": "string",
             "maxLength": 1500,
@@ -2391,7 +2975,7 @@
           },
           "documents": {
             "items": {
-              "$ref": "#/components/schemas/Document"
+              "$ref": "#/components/schemas/Document-Input"
             },
             "type": "array",
             "maxItems": 30,
@@ -2451,6 +3035,19 @@
               }
             ],
             "title": "Valid Until"
+          },
+          "validity_open_ended": {
+            "type": "boolean",
+            "title": "Validity Open Ended",
+            "description": "Подтверждено: нормативный акт не устанавливает конечную дату; не означает бессрочный прием заявок",
+            "default": false
+          },
+          "validity_reference": {
+            "type": "string",
+            "maxLength": 600,
+            "title": "Validity Reference",
+            "description": "Источник и обоснование отсутствия конечной даты действия условий",
+            "default": ""
           },
           "legal_edition": {
             "type": "string",
@@ -2499,6 +3096,25 @@
       },
       "VersionData-Output": {
         "properties": {
+          "publication_scope": {
+            "type": "string",
+            "enum": [
+              "full",
+              "reference"
+            ],
+            "title": "Publication Scope",
+            "description": "full: проверка допуска; reference: справочные сведения без решения о соответствии",
+            "default": "full"
+          },
+          "reference_rule_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Reference Rule Ids",
+            "description": "Правила справочной карточки, отдельно сверенные редактором"
+          },
           "summary": {
             "type": "string",
             "maxLength": 1500,
@@ -2537,7 +3153,7 @@
           },
           "documents": {
             "items": {
-              "$ref": "#/components/schemas/Document"
+              "$ref": "#/components/schemas/Document-Output"
             },
             "type": "array",
             "maxItems": 30,
@@ -2597,6 +3213,19 @@
               }
             ],
             "title": "Valid Until"
+          },
+          "validity_open_ended": {
+            "type": "boolean",
+            "title": "Validity Open Ended",
+            "description": "Подтверждено: нормативный акт не устанавливает конечную дату; не означает бессрочный прием заявок",
+            "default": false
+          },
+          "validity_reference": {
+            "type": "string",
+            "maxLength": 600,
+            "title": "Validity Reference",
+            "description": "Источник и обоснование отсутствия конечной даты действия условий",
+            "default": ""
           },
           "legal_edition": {
             "type": "string",
@@ -2667,7 +3296,7 @@
   "servers": [
     {
       "url": "/",
-      "description": "Текущий сервер; публичный HTTPS пока не настроен"
+      "description": "Текущий сервер"
     }
   ]
 }

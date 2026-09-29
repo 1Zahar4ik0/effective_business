@@ -2,11 +2,27 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Literal
 from zoneinfo import ZoneInfo
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    HttpUrl,
+    field_validator,
+    model_validator,
+)
 
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
+
+
+NUMERIC_PROFILE_FIELDS = (
+    "own_funds",
+    "years_active",
+    "expense_year",
+    "family_kfh_members",
+    "requested_grant",
+)
 
 
 class BusinessProfile(StrictModel):
@@ -16,12 +32,21 @@ class BusinessProfile(StrictModel):
     is_kfh: bool | None = None
     tax_regime: Literal["eshn", "usn", "npd", "general"] | None = None
     sector: Literal["crops", "livestock", "processing", "mixed"] | None = None
-    goal: Literal["equipment", "construction", "working_capital", "consultation"] | None = None
+    goal: (
+        Literal["equipment", "construction", "working_capital", "consultation"] | None
+    ) = None
     expense_stage: Literal["planned", "incurred"] | None = None
     years_active: int | None = Field(default=None, ge=0, le=100)
-    own_funds: Decimal | None = Field(default=None, ge=0, le=Decimal("1000000000000"), max_digits=15, decimal_places=2)
+    own_funds: Decimal | None = Field(
+        default=None, ge=0, le=Decimal("1000000000000"), max_digits=15, decimal_places=2
+    )
     is_sme: bool | None = None
     special_category: bool | None = None
+    expense_year: int | None = Field(default=None, ge=2000, le=2100)
+    family_kfh_members: int | None = Field(default=None, ge=0, le=100)
+    requested_grant: Decimal | None = Field(
+        default=None, ge=0, le=Decimal("1000000000000"), max_digits=15, decimal_places=2
+    )
 
 
 class Rule(StrictModel):
@@ -37,26 +62,39 @@ class Rule(StrictModel):
     def valid_rule(self):
         if self.op == "manual":
             if self.field is not None or self.value is not None or self.children:
-                raise ValueError("Ручная проверка не принимает field, value или children")
+                raise ValueError(
+                    "Ручная проверка не принимает field, value или children"
+                )
         elif self.op in ("all", "any"):
             if not self.children or self.field is not None:
                 raise ValueError("Группа должна содержать условия, но не field")
         else:
-            if self.field not in BusinessProfile.model_fields or self.children or self.value is None:
+            if (
+                self.field not in BusinessProfile.model_fields
+                or self.children
+                or self.value is None
+            ):
                 raise ValueError("Некорректное поле или значение условия")
             if self.op == "in" and not isinstance(self.value, list):
                 raise ValueError("in требует список")
-            if self.field in ("is_kfh", "is_sme", "special_category") and (self.op != "eq" or type(self.value) is not bool):
+            if self.field in ("is_kfh", "is_sme", "special_category") and (
+                self.op != "eq" or type(self.value) is not bool
+            ):
                 raise ValueError("Логическое поле требует eq и true/false")
             if self.op == "eq" and isinstance(self.value, list):
                 raise ValueError("eq не принимает список")
-            if self.field in ("years_active", "own_funds") and self.op == "in":
+            if self.field in NUMERIC_PROFILE_FIELDS and self.op == "in":
                 raise ValueError("Числовое поле требует eq, gte или lte")
-            if self.op in ("gte", "lte") or (self.op == "eq" and self.field in ("years_active", "own_funds")):
-                if self.field not in ("years_active", "own_funds"):
+            if self.op in ("gte", "lte") or (
+                self.op == "eq" and self.field in NUMERIC_PROFILE_FIELDS
+            ):
+                if self.field not in NUMERIC_PROFILE_FIELDS:
                     raise ValueError("Числовое сравнение требует числового поля")
                 try:
-                    if isinstance(self.value, bool) or not Decimal(str(self.value)).is_finite():
+                    if (
+                        isinstance(self.value, bool)
+                        or not Decimal(str(self.value)).is_finite()
+                    ):
                         raise ValueError()
                 except Exception:
                     raise ValueError("Некорректное число")
@@ -74,9 +112,15 @@ class Document(StrictModel):
     id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,64}$")
     title: str = Field(min_length=1, max_length=200)
     hint: str = Field(max_length=700)
+    condition: Rule | None = None
 
 
 class VersionData(StrictModel):
+    publication_scope: Literal["full", "reference"] = Field(
+        default="full",
+        description="full: проверка допуска; reference: справочные сведения без решения о соответствии",
+    )
+    reference_rule_ids: list[str] = Field(default_factory=list, max_length=30, description="Правила справочной карточки, отдельно сверенные редактором")
     summary: str = Field(min_length=10, max_length=1500)
     benefit: str = Field(min_length=1, max_length=500)
     operator: str = Field(min_length=1, max_length=200)
@@ -89,6 +133,15 @@ class VersionData(StrictModel):
     verification_status: Literal["unverified", "verified", "conflict"] = "unverified"
     valid_from: datetime | None = None
     valid_until: datetime | None = None
+    validity_open_ended: bool = Field(
+        default=False,
+        description="Подтверждено: нормативный акт не устанавливает конечную дату; не означает бессрочный прием заявок",
+    )
+    validity_reference: str = Field(
+        default="",
+        max_length=600,
+        description="Источник и обоснование отсутствия конечной даты действия условий",
+    )
     legal_edition: str = Field(default="", max_length=2000)
     research_checked_at: datetime | None = None
     missing_evidence: list[str] = Field(default_factory=list, max_length=30)
@@ -103,11 +156,18 @@ class VersionData(StrictModel):
 
     @model_validator(mode="after")
     def consistency(self):
+        if set(self.reference_rule_ids) - {rule.id for rule in self.rules}:
+            raise ValueError("Сверенное правило должно присутствовать в карточке")
+        if self.validity_open_ended and self.valid_until is not None:
+            raise ValueError(
+                "Укажите либо конечную дату, либо подтвержденное отсутствие конечной даты"
+            )
         if self.valid_until and self.valid_from and self.valid_until <= self.valid_from:
             raise ValueError("Некорректный период условий")
         ids = [d.id for d in self.documents]
         if len(ids) != len(set(ids)):
             raise ValueError("Повторяющиеся ID документов")
+
         def visit(rules, depth=0):
             if depth > 5:
                 raise ValueError("Слишком глубокое дерево правил")
@@ -116,10 +176,23 @@ class VersionData(StrictModel):
                 result.append(rule.id)
                 result.extend(visit(rule.children, depth + 1))
             return result
+
+        for document in self.documents:
+            if document.condition:
+                condition_ids = visit([document.condition])
+                if len(condition_ids) != len(set(condition_ids)) or len(condition_ids) > 100:
+                    raise ValueError("Повторяющиеся ID или слишком много условий документа")
         rule_ids = visit(self.rules)
         if len(rule_ids) != len(set(rule_ids)) or len(rule_ids) > 100:
             raise ValueError("Повторяющиеся ID или слишком много условий")
         return self
+
+    @property
+    def has_validity_period(self) -> bool:
+        return self.valid_from is not None and (
+            self.valid_until is not None
+            or (self.validity_open_ended and bool(self.validity_reference.strip()))
+        )
 
 
 class RoundInput(StrictModel):
@@ -128,13 +201,31 @@ class RoundInput(StrictModel):
     ends_at: datetime
     timezone: str = "Europe/Moscow"
     state: Literal["announced", "suspended", "cancelled", "unknown"] = "announced"
+    acceptance_status: Literal["unconfirmed", "confirmed_open", "closed"] = (
+        "unconfirmed"
+    )
+    acceptance_checked_at: datetime | None = None
     application_url: HttpUrl
     channel: str = Field(min_length=1, max_length=100)
 
     @model_validator(mode="after")
     def dates(self):
-        if self.starts_at.tzinfo is None or self.ends_at.tzinfo is None or self.ends_at <= self.starts_at:
+        if (
+            self.starts_at.tzinfo is None
+            or self.ends_at.tzinfo is None
+            or self.ends_at <= self.starts_at
+        ):
             raise ValueError("Неверные даты / часовой пояс отбора")
+        if (
+            self.acceptance_checked_at is not None
+            and self.acceptance_checked_at.tzinfo is None
+        ):
+            raise ValueError("Укажите часовой пояс проверки приёма")
+        if (
+            self.acceptance_status != "unconfirmed"
+            and self.acceptance_checked_at is None
+        ):
+            raise ValueError("Подтверждение приёма требует даты отдельной проверки")
         try:
             ZoneInfo(self.timezone)
         except Exception:
@@ -203,10 +294,16 @@ class CheckView(StrictModel):
     children: list["CheckView"]
 
 
+class DocumentAssessment(Document):
+    applicability: Literal["required", "not_applicable", "unknown"]
+    check: CheckView | None = None
+
+
 class MatchView(StrictModel):
     measure: MeasureView
     status: Literal["PASS", "FAIL", "UNKNOWN"]
     checks: list[CheckView]
+    documents: list[DocumentAssessment] = Field(default_factory=list)
 
 
 class MatchesView(StrictModel):
@@ -216,6 +313,32 @@ class MatchesView(StrictModel):
 
 class PlanDocument(Document):
     done: bool
+    applicability: Literal["required", "not_applicable", "unknown"] | None = None
+    check: CheckView | None = None
+
+
+class PlanAssessment(StrictModel):
+    engine_version: str | None = None
+
+    version_id: str | None = None
+    version: int | None = None
+    legal_edition: str | None = None
+    round: RoundView | None = None
+    assessed_at: datetime
+    profile: BusinessProfile
+    status: Literal["PASS", "FAIL", "UNKNOWN"]
+    checks: list[CheckView]
+    availability: str
+
+
+class ProfileQuestion(StrictModel):
+    field: Literal["expense_year", "family_kfh_members", "requested_grant"]
+    label: str
+    hint: str
+    minimum: int
+    maximum: int
+    source_refs: list[str]
+    step: str = "1"
 
 
 class PlanView(StrictModel):
@@ -227,6 +350,8 @@ class PlanView(StrictModel):
     round_id: str
     needs_review: bool
     current_version_id: str | None
+    assessment: PlanAssessment | None = None
+    profile_changed: bool = False
 
 
 class UserView(StrictModel):
@@ -239,3 +364,13 @@ class UserView(StrictModel):
 class SessionView(StrictModel):
     user: UserView
     csrf: str
+
+
+class PreviewInput(StrictModel):
+    data: VersionData
+    profile: BusinessProfile
+
+
+class PreviewView(StrictModel):
+    status: Literal["PASS", "FAIL", "UNKNOWN"]
+    checks: list[CheckView]

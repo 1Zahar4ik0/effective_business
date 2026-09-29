@@ -1,4 +1,3 @@
-# Только выделенная тестовая БД navigator_test; обычная navigator не очищается.
 services:
   tests:
     image: opora-apk-app

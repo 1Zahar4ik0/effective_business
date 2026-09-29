@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-27",
+  "origin": "https://opora-apk.159-194-249-97.sslip.io",
+  "source_archive": "opora-apk-source-20260927-r2.tar.gz",
+  "source_sha256": "afc048a0c3cd4aec1c8f062291bedf9e154e94a1a553418258ac2ad60a4f0878",
+  "files": 69,
+  "status": "deployed_and_checked",
+  "tests_passed": 50,
+  "data_api_steps_passed": 16,
+  "max_real_client_login_tested": false,
+  "backup_restored_all_tables_sha256": "a62893d10c246cb3f9acbe7db89aab8e0150587431d0918a9fa6346357b33d15",
+  "production_real_measures": 10,
+  "production_real_draft_versions": 11,
+  "production_published_versions": 0,
+  "production_synthetic_measures": 0,
+  "official_announcements": 10,
+  "migration_head": "20260918_one_published",
+  "source_files_verified": true,
+  "source_secret_scan": "69 runtime files: no exact matches with configured local MAX secrets",
+  "isolated_restart_verified": true
+}

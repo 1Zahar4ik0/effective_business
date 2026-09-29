@@ -1,0 +1,9 @@
+{
+  "date": "2026-09-29",
+  "scope": "frontend only",
+  "image": "sha256:ba98d12978458de6739cc161bd3aca9d1584b28b7fadabb7dbbddc0748e3fe55",
+  "previous_image": "sha256:ab1d137b1bf7b7e8d8c09ccc30b7be1522304f5f747abfe30dd76b0c9e0adf6a",
+  "backend_and_schema_changed": false,
+  "source_patch_sha256": "ee85a8e6342cc4298ae5062c7c1d9d794ca5c6a8e94a30bf993157afdd886a21",
+  "dist_sha256": "ce524da72ff0d73a33d4587f010eea3448278cc07b87e1bfe6cd8cb8b0d1a3c9"
+}

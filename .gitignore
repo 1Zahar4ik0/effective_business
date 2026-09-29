@@ -23,5 +23,15 @@ output/submission/jury/
 output/submission/*.zip
 output/pdf/opora-apk-jury.pdf
 
-# Preserved destination files from the local project move
 .migration-backup-*/
+
+output/deploy-20260928/
+
+*.tsbuildinfo
+
+# Generated release archives and private jury handoff stay local.
+/output/*
+!/output/submission/
+!/output/submission-20260929-rc2/
+/output/submission-20260929-rc2/*
+!/output/submission-20260929-rc2/public/
